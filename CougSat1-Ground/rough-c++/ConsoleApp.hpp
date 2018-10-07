@@ -10,6 +10,8 @@ class Console
         bool getIsRunning() const { return isRunning; }
 
         void setIsRunning(const bool val) { isRunning = val; }
+
+        Packet requestPacket();
     
     private:
         bool isRunning;
