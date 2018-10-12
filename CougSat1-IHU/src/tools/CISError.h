@@ -43,6 +43,6 @@ enum CISError
     ERROR_POWER_EMERGENCY   = 0x16, //Emergency power level reached
     ERROR_COMMS_INTERRUPTED = 0x17, //Communication link lost
     ERROR_UNKNOWN_COMMAND   = 0x18 //The requested command is unknown
-}
+};
 
 #endif /* SRC_TOOLS_CISERROR_H_ */

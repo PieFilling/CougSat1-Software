@@ -25,34 +25,42 @@
 #include "tools/CISError.h"
 #include "tools/CISConsole.h"
 
-extern void (*cisEventList[EVENTS_SIZE])(uint8_t *dataBlock,
-    uint16_t dataLength);
+extern void (*cisEventList[EVENTS_SIZE])(uint8_t *dataBlock, uint16_t dataLength);
 
-IHU* IHU::instance = NULL;
+IHU *IHU::instance = NULL;
 
 /**
  * Instantiate hardware classes and subsystems
  */
-IHU::IHU() :
-    queue(IHU_EVENT_QUEUE_SIZE * EVENTS_EVENT_SIZE), spi(SPI_MOSI, SPI_MISO,
-    SPI_SCLK), i2cPrimary(I2C0_SDA, I2C0_SCL), i2cSecondary(I2C1_SDA, I2C1_SCL), sd(
-        PC_3, PC_2, PD_1, PC_1), fs("sd", &sd), adcs(i2cPrimary), payload(spi,
-        i2cSecondary, SPI_CS_CAM0), pmic(i2cPrimary), rcs(), ifjr() {
+IHU::IHU() : adcs(i2cPrimary),
+             payload(spi, i2cSecondary, SPI_CS_CAM0),
+             pmic(i2cPrimary),
+             rcs(),
+             ifjr(),
+             queue(IHU_EVENT_QUEUE_SIZE * EVENTS_EVENT_SIZE),
+             i2cPrimary(I2C0_SDA, I2C0_SCL),
+             i2cSecondary(I2C1_SDA, I2C1_SCL),
+             spi(SPI_MOSI, SPI_MISO, SPI_SCLK),
+             sd(PC_3, PC_2, PD_1, PC_1),
+             fs("sd", &sd)
+{
 }
 
 /**
  * Deconstuctor is currently empty
  */
-IHU::~IHU() {
-
+IHU::~IHU()
+{
 }
 
 /**
  * Singleton object pointer, creates one if null
  * @return pointer to the singleton object
  */
-IHU* IHU::getInstance() {
-  if (instance == NULL) {
+IHU *IHU::getInstance()
+{
+  if (instance == NULL)
+  {
     instance = new IHU();
   }
   return instance;
@@ -65,7 +73,8 @@ IHU* IHU::getInstance() {
  * @param dataLength of the data block
  */
 void IHU::addEvent(uint8_t eventIndex, uint8_t *dataBlock,
-    uint16_t dataLength) {
+                   uint16_t dataLength)
+{
   queue.call(cisEventList[eventIndex], dataBlock, dataLength);
 }
 
@@ -76,17 +85,17 @@ void IHU::addEvent(uint8_t eventIndex, uint8_t *dataBlock,
  * @param dataBlock to give to event
  * @param dataLength of the data block
  */
-void IHU::addEventPeriodic(int ms, uint8_t eventIndex, uint8_t *dataBlock,
-    uint16_t dataLength) {
+void IHU::addEventPeriodic(int ms, uint8_t eventIndex, uint8_t *dataBlock, uint16_t dataLength)
+{
   queue.call_every(ms, cisEventList[eventIndex], dataBlock, dataLength);
 }
 
 /**
  * Initializes IHU hardware drivers and system interfaces
  */
-void IHU::initialize() {
-  CONSOLE_CLR
-  ;
+void IHU::initialize()
+{
+  CONSOLE_CLR;
   DEBUG("IHU", "Starting initialization");
   CONSOLE_TX("IHU", "Starting initialization");
   uint8_t result;
@@ -94,55 +103,67 @@ void IHU::initialize() {
   spi.frequency(1000000);
 
   result = adcs.initialize();
-  if (result != ERROR_SUCCESS) {
+  if (result != ERROR_SUCCESS)
+  {
     DEBUG("IHU", "ADCS initialization error: 0x%02x", result);
     CONSOLE_TX("IHU", "ADCS initialization error: 0x%02x", result);
-    while (true) {
+    while (true)
+    {
       //Give up
     }
   }
 
   result = payload.initialize();
-  if (result != ERROR_SUCCESS) {
+  if (result != ERROR_SUCCESS)
+  {
     DEBUG("IHU", "Payload initialization error: 0x%02x", result);
     CONSOLE_TX("IHU", "Payload initialization error: 0x%02x", result);
-    while (true) {
+    while (true)
+    {
       //Give up
     }
   }
 
   result = pmic.initialize();
-  if (result != ERROR_SUCCESS) {
+  if (result != ERROR_SUCCESS)
+  {
     DEBUG("IHU", "PMIC initialization error: 0x%02x", result);
     CONSOLE_TX("IHU", "PMIC initialization error: 0x%02x", result);
-    while (true) {
+    while (true)
+    {
       //Give up
     }
   }
 
   result = rcs.initialize();
-  if (result != ERROR_SUCCESS) {
+  if (result != ERROR_SUCCESS)
+  {
     DEBUG("IHU", "RCS initialization error: 0x%02x", result);
     CONSOLE_TX("IHU", "RCS initialization error: 0x%02x", result);
-    while (true) {
+    while (true)
+    {
       //Give up
     }
   }
 
   result = ifjr.initialize();
-  if (result != ERROR_SUCCESS) {
+  if (result != ERROR_SUCCESS)
+  {
     DEBUG("IHU", "RCS initialization error: 0x%02x", result);
     CONSOLE_TX("IHU", "RCS initialization error: 0x%02x", result);
-    while (true) {
+    while (true)
+    {
       //Give up
     }
   }
 
   result = sd.init();
-  if (result != ERROR_SUCCESS) {
+  if (result != ERROR_SUCCESS)
+  {
     DEBUG("IHU", "SD card initialization error: 0x%02x", result);
     CONSOLE_TX("IHU", "SD card initialization error: 0x%02x", result);
-    while (true) {
+    while (true)
+    {
       //Give up
     }
   }
@@ -153,7 +174,8 @@ void IHU::initialize() {
 /**
  * Begins an infinite loop of processing the eventQueue
  */
-void IHU::run() {
+void IHU::run()
+{
   queue.dispatch();
 }
 
@@ -161,7 +183,8 @@ void IHU::run() {
  * Requests PMIC to shutdown the system
  * The event "shutdown" handles telling every system that IHU is turning off
  */
-void IHU::stop() {
+void IHU::stop()
+{
   //pmic.switchRail(RAIL_IHU, RAIL_OFF);
   return;
 }
