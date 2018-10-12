@@ -4,6 +4,9 @@ mbed-os
 *mbed-os.lib
 *mbed_settings.*
 BUILD
+*mbed_config.h
+*MakeFile
+*GettingStarted.html
 
 # Eclipse
 .metadata
