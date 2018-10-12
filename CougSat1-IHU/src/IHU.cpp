@@ -42,8 +42,7 @@ IHU::IHU() : adcs(i2cPrimary),
              i2cSecondary(I2C1_SDA, I2C1_SCL),
              spi(SPI_MOSI, SPI_MISO, SPI_SCLK),
              sd(PC_3, PC_2, PD_1, PC_1),
-             fs("sd", &sd),
-
+             fs("sd", &sd)
 {
 }
 
