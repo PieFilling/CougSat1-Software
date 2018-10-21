@@ -1,0 +1,8 @@
+#ifndef GENERIC_BOARD_ADDRESSES
+#define GENERIC_BOARD_ADDRESSES
+
+const int GEN_SLAVE1_WRITE_ADDR = 0xAC;
+const int GEN_SLAVE1_READ_ADDR = 0xAD;
+
+
+#endif

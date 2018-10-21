@@ -113,7 +113,7 @@ void IHU::initialize()
     }
   }
 
-  result = payload.initialize();
+  // result = payload.initialize();
   if (result != ERROR_SUCCESS)
   {
     DEBUG("IHU", "Payload initialization error: 0x%02x", result);
@@ -157,7 +157,7 @@ void IHU::initialize()
     }
   }
 
-  result = sd.init();
+  // result = sd.init();
   if (result != ERROR_SUCCESS)
   {
     DEBUG("IHU", "SD card initialization error: 0x%02x", result);

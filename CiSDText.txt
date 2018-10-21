@@ -1,0 +1,8 @@
+Very very simple subsystem communication
+
+Plug "Anker" USB hub into pc
+Open three terminals/powershell terminals.
+Go to device manager > ports
+On each respective terminal, do mbed sterm --port X where X is the respective COM#
+
+On master, enter command in format "N M" where N is subsystem 1 or 2, and M is 0-9 blinks

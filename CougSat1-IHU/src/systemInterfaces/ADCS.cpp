@@ -21,21 +21,22 @@
  * Saves a reference to the i2c
  * @param i2c connected to ADCS
  */
-ADCS::ADCS(I2C &i2c) : i2c(i2c) {
+ADCS::ADCS(I2C &i2c) : i2c(i2c)
+{
 }
 
 /**
  * Destructor is currently empty
  */
-ADCS::~ADCS() {
-
+ADCS::~ADCS()
+{
 }
 
 /**
  * Initializes interface to ADCS
  * @return error code
  */
-uint8_t ADCS::initialize(){
-
-  return ERROR_SUCCESS;
+uint8_t ADCS::initialize()
+{
+    return ERROR_SUCCESS;
 }

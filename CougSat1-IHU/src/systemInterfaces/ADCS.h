@@ -22,16 +22,16 @@
 
 #define I2C_ADDR_ADCS 0xAC
 
-class ADCS : public SubSystem {
-  public:
-    ADCS(I2C &i2c);
-    ~ADCS();
+class ADCS : public SubSystem
+{
+public:
+  ADCS(I2C &i2c);
+  ~ADCS();
 
-    uint8_t initialize();
+  uint8_t initialize();
 
-  private:
-    I2C &i2c;
-
+private:
+  I2C &i2c;
 };
 
 #endif /* !SRC_SYSTEMINTERFACES_ADCS_H_ */

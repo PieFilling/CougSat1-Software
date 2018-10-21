@@ -1,0 +1,8 @@
+#ifndef GENERIC_BOARD_ADDRS
+#define GENERIC_BOARD_ADDRS
+
+const int GEN_MASTER_ADDR = 0x80;
+const int GEN_THIS_WRITE_ADDR = 0xAC;
+const int GEN_THIS_READ_ADDR = 0xAD;
+
+#endif

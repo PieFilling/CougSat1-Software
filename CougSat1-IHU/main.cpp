@@ -25,9 +25,15 @@
  * Initializes IHU object and starts the eventQueue
  * @return error code
  */
-int main(void) {
-  IHU* ihu = IHU::getInstance();
+int main(void)
+{
+  Serial pc(USBTX, USBRX);
+  pc.printf("test\r\n");
+  IHU *ihu = IHU::getInstance();
+  pc.printf("test1\r\n");
   ihu->initialize();
+  pc.printf("test2\r\n");
   ihu->run();
+  pc.printf("test3\r\n");
   return ERROR_SUCCESS;
 }

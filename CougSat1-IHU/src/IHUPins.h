@@ -25,10 +25,10 @@
 
 #define SPI_CS_CAM0 PD_14
 
-#define I2C0_SDA  PB_9
-#define I2C0_SCL  PB_8
+#define I2C0_SDA PB_9
+#define I2C0_SCL PB_8
 
-#define I2C1_SDA  PF_0
-#define I2C1_SCL  PF_1
+#define I2C1_SDA PF_0
+#define I2C1_SCL PF_1
 
 #endif /* SRC_IHU_H_ */
