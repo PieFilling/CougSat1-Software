@@ -99,11 +99,11 @@ void IHU::initialize() {
     CONSOLE_TX("IHU", "ADCS initialization error: 0x%02x", result);
     while (true) {
       result = adcs.initialize();
-    if (result == 0)
-    {
-      result == ERROR_SUCCESS;
-      break;
-    }
+      if (result == 0)
+      {
+        result == ERROR_SUCCESS;
+        break;
+      }
     }
   }
 
@@ -113,11 +113,11 @@ void IHU::initialize() {
     CONSOLE_TX("IHU", "Payload initialization error: 0x%02x", result);
     while (true) {
       result = payload.initialize();
-    if (result == 0)
-    {
-      result == ERROR_SUCCESS;
-      break;
-    }
+      if (result == 0)
+      {
+        result == ERROR_SUCCESS;
+        break;
+      }
     }
   }
 
@@ -127,11 +127,11 @@ void IHU::initialize() {
     CONSOLE_TX("IHU", "PMIC initialization error: 0x%02x", result);
     while (true) {
       result = pmic.initialize();
-    if (result == 0)
-    {
-      result == ERROR_SUCCESS;
-      break;
-    }
+      if (result == 0)
+      {
+        result == ERROR_SUCCESS;
+        break;
+      }
     }
   }
 
@@ -141,11 +141,11 @@ void IHU::initialize() {
     CONSOLE_TX("IHU", "RCS initialization error: 0x%02x", result);
     while (true) {
       result = rcs.initialize();
-    if (result == 0)
-    {
-      result == ERROR_SUCCESS;
-      break;
-    }
+      if (result == 0)
+      {
+        result == ERROR_SUCCESS;
+        break;
+      }
     }
   }
 
@@ -155,11 +155,11 @@ void IHU::initialize() {
     CONSOLE_TX("IHU", "RCS initialization error: 0x%02x", result);
     while (true) {
       result = ifjr.initialize();
-    if (result == 0)
-    {
-      result == ERROR_SUCCESS;
-      break;
-    }
+      if (result == 0)
+      {
+        result == ERROR_SUCCESS;
+        break;
+      }
     }
   }
 
@@ -169,11 +169,11 @@ void IHU::initialize() {
     CONSOLE_TX("IHU", "SD card initialization error: 0x%02x", result);
     while (true) {
       result = sd.initialize();
-    if (result == 0)
-    {
-      result == ERROR_SUCCESS;
-      break;
-    }
+        if (result == 0)
+        {
+          result == ERROR_SUCCESS;
+          break;
+        }
     }
   }
   DEBUG("IHU", "Initialization complete");
