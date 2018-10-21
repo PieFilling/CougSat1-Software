@@ -21,4 +21,5 @@
 #include "IHUPins.h"
 
 SWO_Channel swo;
-Serial umbilical(UART0_TX, UART0_RX, 115200);
+//Serial umbilical(UART0_TX, UART0_RX, 115200);
+Serial umbilical(USBTX, USBRX);

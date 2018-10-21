@@ -111,14 +111,18 @@ void IHU::initialize() {
   if (result != ERROR_SUCCESS) {
     DEBUG("IHU", "Payload initialization error: 0x%02x", result);
     CONSOLE_TX("IHU", "Payload initialization error: 0x%02x", result);
-    while (true) {
+    for(int i = 0; i < 3; ++i) {
       result = payload.initialize();
       if (result == 0)
       {
         result == ERROR_SUCCESS;
         break;
       }
+
     }
+    DEBUG("IHU", "Payload initialization failure restarting", result);
+    CONSOLE_TX("IHU", "Payload initialization failure restarting", result);
+    this->stop();
   }
 
   result = pmic.initialize();
@@ -168,7 +172,7 @@ void IHU::initialize() {
     DEBUG("IHU", "SD card initialization error: 0x%02x", result);
     CONSOLE_TX("IHU", "SD card initialization error: 0x%02x", result);
     while (true) {
-      result = sd.initialize();
+      result = sd.init();
         if (result == 0)
         {
           result == ERROR_SUCCESS;
@@ -192,6 +196,10 @@ void IHU::run() {
  * The event "shutdown" handles telling every system that IHU is turning off
  */
 void IHU::stop() {
+  DEBUG("IHU", "IHU Restarting");
+  CONSOLE_TX("IHU", "IHU Restarting");
+  wait(.5);
+  NVIC_SystemReset();
   //pmic.switchRail(RAIL_IHU, RAIL_OFF);
   return;
 }

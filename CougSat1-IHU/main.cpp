@@ -26,8 +26,12 @@
  * @return error code
  */
 int main(void) {
+  Serial usb(USBTX, USBRX);
+  usb.printf("Test\r\n");
   IHU* ihu = IHU::getInstance();
+  usb.printf("Test2\r\n");
   ihu->initialize();
+  usb.printf("Test3\r\n");
   ihu->run();
   return ERROR_SUCCESS;
 }
