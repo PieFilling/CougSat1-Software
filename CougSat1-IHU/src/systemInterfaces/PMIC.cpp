@@ -23,7 +23,7 @@
  */
 PMIC::PMIC(I2C &i2c) :
     i2c(i2c) {
-
+    
 }
 
 /**
@@ -38,5 +38,16 @@ PMIC::~PMIC() {
  * @return error code
  */
 uint8_t PMIC::initialize() {
+  DEBUG("PMIC", "Starting initialization");
+  CONSOLE_TX("PMIC", "Starting initialization");
+  uint8_t result = 
+  if (result != ERROR_SUCCESS) {
+    DEBUG("PMIC", "PMIC ping error: 0x%02x", result);
+    CONSOLE_TX("PMIC", "PMIC ping error: 0x%02x", result);
+    return result;
+  }
+
+  DEBUG("PMIC", "Initialization complete");
+  CONSOLE_TX("PMIC", "Initialization complete");
   return ERROR_SUCCESS;
 }
