@@ -35,8 +35,8 @@ IHU* IHU::instance = NULL;
  */
 IHU::IHU() :
     queue(IHU_EVENT_QUEUE_SIZE * EVENTS_EVENT_SIZE), spi(SPI_MOSI, SPI_MISO,
-    SPI_SCLK), i2cPrimary(I2C0_SDA, I2C0_SCL), i2cSecondary(I2C1_SDA, I2C1_SCL), sd(
-        PC_3, PC_2, PD_1, PC_1), fs("sd", &sd), adcs(i2cPrimary), payload(spi,
+    SPI_SCLK), i2cPrimary(I2C0_SDA, I2C0_SCL), i2cSecondary(I2C1_SDA, I2C1_SCL),
+     sd( PC_3, PC_2, PD_1, PC_1), fs("sd", &sd), adcs(i2cPrimary), payload(spi,
         i2cSecondary, SPI_CS_CAM0), pmic(i2cPrimary), rcs(), ifjr() {
 }
 
@@ -93,6 +93,7 @@ void IHU::initialize() {
   i2cPrimary.frequency(400000);
   spi.frequency(1000000);
 
+  //Starts initializing the ADCS
   result = adcs.initialize();
   if (result != ERROR_SUCCESS) {
     DEBUG("IHU", "ADCS initialization error: 0x%02x", result);
@@ -114,6 +115,7 @@ void IHU::initialize() {
     }
   }
 
+  //Starts initializing the Payload
   result = payload.initialize();
   if (result != ERROR_SUCCESS) {
     DEBUG("IHU", "Payload initialization error: 0x%02x", result);
@@ -136,6 +138,7 @@ void IHU::initialize() {
     }
   }
 
+  //Starts initializing the PMIC
   result = pmic.initialize();
   if (result != ERROR_SUCCESS) {
     DEBUG("IHU", "PMIC initialization error: 0x%02x", result);
@@ -157,6 +160,7 @@ void IHU::initialize() {
     }
   }
 
+  //Starts initializing the RCS
   result = rcs.initialize();
   if (result != ERROR_SUCCESS) {
     DEBUG("IHU", "RCS initialization error: 0x%02x", result);
@@ -178,6 +182,7 @@ void IHU::initialize() {
     }
   }
 
+  //Starts initializing the IFJR
   result = ifjr.initialize();
   if (result != ERROR_SUCCESS) {
     DEBUG("IHU", "IFJR initialization error: 0x%02x", result);
@@ -199,6 +204,7 @@ void IHU::initialize() {
     }
   }
 
+  //Starts initializing the SD card
   result = sd.init();
   if (result != ERROR_SUCCESS) {
     DEBUG("IHU", "SD card initialization error: 0x%02x", result);
