@@ -105,6 +105,7 @@ void IHU::initialize() {
         break;
       }
     }
+    //If the ADCS fails to initialize after the third try the IHU restarts
     if(result != ERROR_SUCCESS)
     {
       DEBUG("IHU", "ADCS initialization failure restarting IHU", result);
@@ -126,6 +127,7 @@ void IHU::initialize() {
       }
 
     }
+    //If the Payload fails to initialize after the third try the IHU restarts
     if(result != ERROR_SUCCESS)
     {
       DEBUG("IHU", "Payload initialization failure restarting IHU", result);
@@ -146,6 +148,7 @@ void IHU::initialize() {
         break;
       }
     }
+    //If the PMIC fails to initialize after the third try the IHU restarts
     if(result != ERROR_SUCCESS)
     {
       DEBUG("IHU", "PMIC initialization failure restarting IHU", result);
@@ -166,6 +169,7 @@ void IHU::initialize() {
         break;
       }
     }
+    //If the RCS fails to initialize after the third try the IHU restarts
     if(result != ERROR_SUCCESS)
     {
       DEBUG("IHU", "RCS initialization failure restarting IHU", result);
@@ -186,6 +190,7 @@ void IHU::initialize() {
         break;
       }
     }
+    //If the IFJR fails to initialize after the third try the IHU restarts
     if(result != ERROR_SUCCESS)
     {
       DEBUG("IHU", "IFJR initialization failure restarting IHU", result);
@@ -207,6 +212,7 @@ void IHU::initialize() {
       }
       if(result != ERROR_SUCCESS)
       {
+        //If the SD fails to initialize after the third try the IHU restarts
         DEBUG("IHU", "SD initialization failure restarting IHU", result);
         CONSOLE_TX("IHU", "SD initialization failure restarting IHU", result);
         this->restart();
@@ -234,6 +240,7 @@ void IHU::stop() {
   return;
 }
 
+//Restarts the IHU
 void IHU::restart() {
   DEBUG("IHU", "IHU Restarting");
   CONSOLE_TX("IHU", "IHU Restarting");

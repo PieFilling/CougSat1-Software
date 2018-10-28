@@ -6,7 +6,7 @@
  * satellites. This file is proprietary and confidential.                     *
  * Unauthorized copying of this file, via any medium is strictly prohibited.  *
  ******************************************************************************/
-/**
+/*
  * @file main.cpp
  * @author Bradley Davis
  * @date 6 Mar 2018
@@ -20,7 +20,7 @@
 #include "IHU.h"
 #include "tools/CISError.h"
 
-/**
+/*
  * Program start routine
  * Initializes IHU object and starts the eventQueue
  * @return error code
