@@ -97,13 +97,19 @@ void IHU::initialize() {
   if (result != ERROR_SUCCESS) {
     DEBUG("IHU", "ADCS initialization error: 0x%02x", result);
     CONSOLE_TX("IHU", "ADCS initialization error: 0x%02x", result);
-    while (true) {
+    for(int i = 0; i < 3; ++i) {
       result = adcs.initialize();
       if (result == 0)
       {
         result == ERROR_SUCCESS;
         break;
       }
+    }
+    if(result != ERROR_SUCCESS)
+    {
+      DEBUG("IHU", "ADCS initialization failure restarting IHU", result);
+      CONSOLE_TX("IHU", "ADCS initialization failure restarting IHU", result);
+      this->restart();
     }
   }
 
@@ -115,7 +121,7 @@ void IHU::initialize() {
       result = payload.initialize();
       if (result == ERROR_SUCCESS)
       {
-        result == ERROR_SUCCESS;
+        result = ERROR_SUCCESS;
         break;
       }
 
@@ -132,7 +138,7 @@ void IHU::initialize() {
   if (result != ERROR_SUCCESS) {
     DEBUG("IHU", "PMIC initialization error: 0x%02x", result);
     CONSOLE_TX("IHU", "PMIC initialization error: 0x%02x", result);
-    while (true) {
+    for (int i = 0; i < 3; ++i) {
       result = pmic.initialize();
       if (result == 0)
       {
@@ -140,13 +146,19 @@ void IHU::initialize() {
         break;
       }
     }
+    if(result != ERROR_SUCCESS)
+    {
+      DEBUG("IHU", "PMIC initialization failure restarting IHU", result);
+      CONSOLE_TX("IHU", "PMIC initialization failure restarting IHU", result);
+      this->restart();
+    }
   }
 
   result = rcs.initialize();
   if (result != ERROR_SUCCESS) {
     DEBUG("IHU", "RCS initialization error: 0x%02x", result);
     CONSOLE_TX("IHU", "RCS initialization error: 0x%02x", result);
-    while (true) {
+    for (int i = 0; i < 3; ++i) {
       result = rcs.initialize();
       if (result == 0)
       {
@@ -154,19 +166,31 @@ void IHU::initialize() {
         break;
       }
     }
+    if(result != ERROR_SUCCESS)
+    {
+      DEBUG("IHU", "RCS initialization failure restarting IHU", result);
+      CONSOLE_TX("IHU", "RCS initialization failure restarting IHU", result);
+      this->restart();
+    }
   }
 
   result = ifjr.initialize();
   if (result != ERROR_SUCCESS) {
-    DEBUG("IHU", "RCS initialization error: 0x%02x", result);
-    CONSOLE_TX("IHU", "RCS initialization error: 0x%02x", result);
-    while (true) {
+    DEBUG("IHU", "IFJR initialization error: 0x%02x", result);
+    CONSOLE_TX("IHU", "IFJR initialization error: 0x%02x", result);
+    for (int i = 0; i < 3; ++i) {
       result = ifjr.initialize();
       if (result == 0)
       {
         result == ERROR_SUCCESS;
         break;
       }
+    }
+    if(result != ERROR_SUCCESS)
+    {
+      DEBUG("IHU", "IFJR initialization failure restarting IHU", result);
+      CONSOLE_TX("IHU", "IFJR initialization failure restarting IHU", result);
+      this->restart();
     }
   }
 
@@ -176,11 +200,17 @@ void IHU::initialize() {
     CONSOLE_TX("IHU", "SD card initialization error: 0x%02x", result);
     while (true) {
       result = sd.init();
-        if (result == 0)
-        {
-          result == ERROR_SUCCESS;
-          break;
-        }
+      if (result == 0)
+      {
+        result == ERROR_SUCCESS;
+        break;
+      }
+      if(result != ERROR_SUCCESS)
+      {
+        DEBUG("IHU", "SD initialization failure restarting IHU", result);
+        CONSOLE_TX("IHU", "SD initialization failure restarting IHU", result);
+        this->restart();
+      }
     }
   }
   DEBUG("IHU", "Initialization complete");
