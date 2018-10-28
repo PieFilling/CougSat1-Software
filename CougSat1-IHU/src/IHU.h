@@ -17,8 +17,8 @@
  *  -Perform periodic check ups on the entire satellite
  */
 
-#ifndef SRC_SYSTEMINTERFACES_IHU_H_
-#define SRC_SYSTEMINTERFACES_IHU_H_
+#ifndef SRC_IHU_H_
+#define SRC_IHU_H_
 
 #include <mbed.h>
 #include <rtos.h>
@@ -68,4 +68,4 @@ class IHU {
     FATFileSystem fs;
 };
 
-#endif /* !SRC_SYSTEMINTERFACES_IHU_H_ */
+#endif /* !SRC_IHU_H_ */
