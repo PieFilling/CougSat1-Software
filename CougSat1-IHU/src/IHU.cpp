@@ -92,6 +92,7 @@ void IHU::initialize() {
   uint8_t result;
   i2cPrimary.frequency(400000);
   spi.frequency(1000000);
+  int test = 0;
 
   result = adcs.initialize();
   if (result != ERROR_SUCCESS) {
@@ -103,6 +104,11 @@ void IHU::initialize() {
       {
         result == ERROR_SUCCESS;
         break;
+      }
+      test++;
+      else if(test==10)
+      {
+        cout << "Failed to initalize ADCS" << endl;
       }
     }
   }
@@ -118,6 +124,11 @@ void IHU::initialize() {
         result == ERROR_SUCCESS;
         break;
       }
+      test++;
+      else if(test==10)
+      {
+        cout << "Failed to initalize Payload" << endl;
+      }
     }
   }
 
@@ -131,6 +142,11 @@ void IHU::initialize() {
       {
         result == ERROR_SUCCESS;
         break;
+      }
+      test++;
+      else if(test==10)
+      {
+        cout << "Failed to initalize PMIC" << endl;
       }
     }
   }
@@ -146,6 +162,11 @@ void IHU::initialize() {
         result == ERROR_SUCCESS;
         break;
       }
+      test++;
+      else if(test==10)
+      {
+        cout << "Failed to initalize RCS" << endl;
+      }
     }
   }
 
@@ -160,6 +181,11 @@ void IHU::initialize() {
         result == ERROR_SUCCESS;
         break;
       }
+      test++;
+      else if(test==10)
+      {
+        cout << "Failed to initalize IFJR" << endl;
+      }
     }
   }
 
@@ -173,6 +199,11 @@ void IHU::initialize() {
         {
           result == ERROR_SUCCESS;
           break;
+        }
+        test++;
+        else if(test==10)
+        {
+          cout << "Failed to initalize SD" << endl;
         }
     }
   }
