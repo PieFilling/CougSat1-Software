@@ -113,16 +113,19 @@ void IHU::initialize() {
     CONSOLE_TX("IHU", "Payload initialization error: 0x%02x", result);
     for(int i = 0; i < 3; ++i) {
       result = payload.initialize();
-      if (result == 0)
+      if (result == ERROR_SUCCESS)
       {
         result == ERROR_SUCCESS;
         break;
       }
 
     }
-    DEBUG("IHU", "Payload initialization failure restarting", result);
-    CONSOLE_TX("IHU", "Payload initialization failure restarting", result);
-    this->stop();
+    if(result != ERROR_SUCCESS)
+    {
+      DEBUG("IHU", "Payload initialization failure restarting IHU", result);
+      CONSOLE_TX("IHU", "Payload initialization failure restarting IHU", result);
+      this->restart();
+    }
   }
 
   result = pmic.initialize();
@@ -196,10 +199,15 @@ void IHU::run() {
  * The event "shutdown" handles telling every system that IHU is turning off
  */
 void IHU::stop() {
+
+  //pmic.switchRail(RAIL_IHU, RAIL_OFF);
+  return;
+}
+
+void IHU::restart() {
   DEBUG("IHU", "IHU Restarting");
   CONSOLE_TX("IHU", "IHU Restarting");
   wait(.5);
   NVIC_SystemReset();
-  //pmic.switchRail(RAIL_IHU, RAIL_OFF);
   return;
 }

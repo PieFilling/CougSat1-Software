@@ -43,6 +43,7 @@ class IHU {
     void initialize();
     void run();
     void stop();
+    void restart();
 
   private:
     //Singleton class design
