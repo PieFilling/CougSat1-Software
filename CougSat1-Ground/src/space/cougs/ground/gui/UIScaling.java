@@ -6,6 +6,4 @@ public interface UIScaling {
 	
 	void updateUIScaling(UIScale uiScale);
 	
-	
-	
 }

@@ -237,6 +237,7 @@ public class Home extends JPanel implements UIScaling {
 
 		for (Component component : this.getComponents()) {
 			if (component instanceof TitleLabel) {
+				// System.out.println("homePanel");
 				component.setFont(font);
 				component.setBackground(CustomColors.BACKGROUND1);
 				component.setForeground(Color.white);

@@ -1,6 +1,7 @@
 
 package space.cougs.ground.gui.subsystems;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +30,7 @@ public class Camera extends JPanel implements UIScaling, SatelliteInfo {
 	private static final ThumbnailGrid thumbnailGrid = new ThumbnailGrid(2);
 	private static final PhotoViewer photoViewer = new PhotoViewer();
 	private int border = 10;
-	
+
 	private List<File> cameraFolder = new ArrayList<File>();
 	private ListFiles itr = new ListFiles();
 	private static final File imageFile = new File("packets/images");
@@ -47,18 +48,17 @@ public class Camera extends JPanel implements UIScaling, SatelliteInfo {
 
 		photoViewer.setBackground(CustomColors.BACKGROUND2);
 
-		for(File file: cameraFolder)
-		{
+		for (File file : cameraFolder) {
 			thumbnailGrid.addThumbnail(file);
 		}
-		
+
 		this.add(thumbnailGrid);
 		this.add(photoViewer);
-		
+
 		this.repaint();
 		this.setBackground(CustomColors.BACKGROUND1);
 	}
-	
+
 	private final ComponentListener componentListener = new ComponentListener() {
 
 		@Override
@@ -86,7 +86,6 @@ public class Camera extends JPanel implements UIScaling, SatelliteInfo {
 
 	};
 
-
 	private ActionListener actionListener = new ActionListener() {
 
 		@Override
@@ -100,28 +99,33 @@ public class Camera extends JPanel implements UIScaling, SatelliteInfo {
 	@Override
 	public void updateUIScaling(UIScale uiScale) {
 
-		Font titleFont = Fonts.BODY_16;
-		
+		Font bodyFont = Fonts.BODY_16;
+
 		switch (uiScale) {
 		case SCALE_100:
-			titleFont = Fonts.BODY_16;
+			bodyFont = Fonts.BODY_16;
 			break;
 		case SCALE_150:
-			titleFont = Fonts.BODY_24;
+			bodyFont = Fonts.BODY_24;
 			break;
 		case SCALE_200:
-			titleFont = Fonts.BODY_32;
+			bodyFont = Fonts.BODY_32;
 			break;
 		case SCALE_300:
-			titleFont = Fonts.BODY_48;
+			bodyFont = Fonts.BODY_48;
 			break;
 		case SCALE_75:
-			titleFont = Fonts.BODY_12;
+			bodyFont = Fonts.BODY_12;
 			break;
 		default:
 			break;
 		}
-	
+		for (Component component : this.getComponents()) {
+			if (component instanceof JPanel) {
+				component.setFont(bodyFont);
+			}
+		}
+
 	}
 
 	@Override

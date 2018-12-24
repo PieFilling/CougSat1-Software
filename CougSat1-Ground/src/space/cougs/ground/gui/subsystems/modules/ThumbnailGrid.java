@@ -5,8 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -38,22 +36,18 @@ public class ThumbnailGrid extends JPanel {
 
 	private Rectangle scrollBar = new Rectangle(0, 0, 0, 0);
 
-	
 	public ThumbnailGrid(int columns) {
 		this.columns = columns;
 		this.addMouseMotionListener(mouseMotionListener);
 		this.addMouseListener(mouseListener);
 	}
-	
-	public void addActionListner(ActionListener listner)
-	{
+
+	public void addActionListner(ActionListener listner) {
 		actionListners.add(listner);
 	}
-	
+
 	private MouseListener mouseListener = new MouseListener() {
 
-		
-		
 		@Override
 		public void mouseClicked(MouseEvent e) {
 
@@ -86,16 +80,13 @@ public class ThumbnailGrid extends JPanel {
 			int currentRow = (e.getY() + hiddenHeight) / squareLength;
 			int selectedThumbnail = currentRow * 2 + currentColumn;
 
+			if (selectedThumbnail < thumbnailFile.size()) {
 
-			if (selectedThumbnail < thumbnailFile.size())
-			{
-				
-				setCurrentThumbnail(thumbnailFile.get(selectedThumbnail));	
-				for (ActionListener listner : actionListners)
-				{
+				setCurrentThumbnail(thumbnailFile.get(selectedThumbnail));
+				for (ActionListener listner : actionListners) {
 					listner.actionPerformed(null);
 				}
-	
+
 			}
 		}
 
@@ -138,12 +129,12 @@ public class ThumbnailGrid extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(CustomColors.TEXT1);
-		
+
 		squareLength = (getWidth() - barWidth) / columns;
 		gridHeight = (int) (squareLength * Math.max(1, Math.ceil((double) thumbnails.size() / columns)));
 		scrollBar.setSize(barWidth, getHeight() * getHeight() / gridHeight);
 		scrollBar.x = squareLength * 2;
-		
+
 		int y = (int) (-squareLength - scrollPosition * Math.max(0, gridHeight - this.getHeight()));
 		for (int i = 0; i < thumbnails.size(); i++) {
 			if (i % columns == 0) {
@@ -169,5 +160,5 @@ public class ThumbnailGrid extends JPanel {
 	public void setCurrentThumbnail(File newThumbnail) {
 		this.currentThumbnail = newThumbnail;
 	}
-	
+
 }

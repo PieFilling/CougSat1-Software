@@ -4,9 +4,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -21,7 +18,6 @@ import space.cougs.ground.satellites.CougSat1;
 
 public class GUI implements UIScaling {
 
-	private static final long serialVersionUID = 1L;
 	private static final int defaultHeight = 650;
 	private static final int defaultWidth = 1200;
 
@@ -34,7 +30,6 @@ public class GUI implements UIScaling {
 		super();
 
 		Fonts.loadFonts();
-
 
 		mainPanel.setBackground(CustomColors.ACCENT1);
 		mainPanel.setPreferredSize(new Dimension(defaultWidth, defaultHeight));
@@ -56,10 +51,9 @@ public class GUI implements UIScaling {
 		mainFrame.setVisible(true); // makes GUI visible to user / makes visible
 		mainFrame.addComponentListener(componentListener);
 	}
-	
+
 	private final ComponentListener componentListener = new ComponentListener() {
 
-		
 		@Override
 		public void componentResized(ComponentEvent e) {
 
@@ -96,8 +90,6 @@ public class GUI implements UIScaling {
 		}
 
 	};
-
-
 
 	@Override
 	public void updateUIScaling(UIScale uiScale) {

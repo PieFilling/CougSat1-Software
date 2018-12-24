@@ -1,6 +1,8 @@
 package space.cougs.ground.gui.subsystems;
 
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -15,6 +17,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.Timer;
 
 import space.cougs.ground.gui.UIScaling;
+import space.cougs.ground.gui.subsystems.modules.power.Battery;
+import space.cougs.ground.gui.subsystems.modules.power.Regulator;
 import space.cougs.ground.gui.subsystems.modules.power.SolarPanel;
 import space.cougs.ground.gui.subsystems.modules.power.Wire;
 import space.cougs.ground.gui.utils.AnimationComponent;
@@ -32,53 +36,47 @@ public class EPS extends JPanel implements UIScaling, SatelliteInfo {
 
 	private List<AnimationComponent> movingComponents = new ArrayList<AnimationComponent>();
 	private static final double timerDelay = (1 / 10);
+	private static int width = 0;
+	private static int height = 0;
 
-	private Wire wire1 = new Wire(0, 0, 0, 0, 0.0, 0.0);
-
-	private SolarPanel pV0 = new SolarPanel(0.0, 0.0);
-	private SolarPanel pV1 = new SolarPanel(0.0, 0.0);
-	private SolarPanel pV2 = new SolarPanel(0.0, 0.0);
-	private SolarPanel pV3 = new SolarPanel(0.0, 0.0);
-	private SolarPanel pV4 = new SolarPanel(0.0, 0.0);
-	private SolarPanel pV5 = new SolarPanel(0.0, 0.0);
-	private SolarPanel pV6 = new SolarPanel(0.0, 0.0);
-	private SolarPanel pV7 = new SolarPanel(0.0, 0.0);
-
+	private List<Wire> pvWires = new ArrayList<Wire>();
+	private List<Regulator> mppList = new ArrayList<Regulator>();
 	private List<SolarPanel> solarPanels = new ArrayList<SolarPanel>();
-//	int x, int y, int width, int height, double current, double voltage
+	private List<Battery> batts = new ArrayList<Battery>();
+
+	Timer timer = new Timer(100, new MyActionListener());
 
 	public EPS() {
 
 		super();
 
-		solarPanels.add(pV0);
-		solarPanels.add(pV1);
-		solarPanels.add(pV2);
-		solarPanels.add(pV3);
-		solarPanels.add(pV4);
-		solarPanels.add(pV5);
-		solarPanels.add(pV6);
-		solarPanels.add(pV7);
-
-		movingComponents.add(wire1);
-
-		Timer timer = new Timer(100, new MyActionListener());
-		timer.start();
+		for (int i = 0; i < 8; i++) {
+			solarPanels.add(new SolarPanel("pV" + i));
+			pvWires.add(new Wire("pvWire" + i));
+			mppList.add(new Regulator("mppt"));
+		}
+		for (int i = 0; i < 2; i++) {
+			batts.add(new Battery("Battery" + i));
+		}
+		for (Wire pvWire : pvWires) {
+			movingComponents.add(pvWire);
+		}
 
 		GridBagConstraintsWrapper gbc = new GridBagConstraintsWrapper();
 		gbc.setFill(GridBagConstraintsWrapper.BOTH);
 		this.setLayout(new GridBagLayout());
 
-		powerGeneration.add(pV0);
-		powerGeneration.add(pV1);
-		powerGeneration.add(pV2);
-		powerGeneration.add(pV3);
-		powerGeneration.add(pV4);
-		powerGeneration.add(pV5);
-		powerGeneration.add(pV6);
-		powerGeneration.add(pV7);
+		powerGeneration.setLayout(null);
+		for (int i = 0; i < 8; i++) {
+			powerGeneration.add(solarPanels.get(i));
+			powerGeneration.add(pvWires.get(i));
+		}
+		powerGeneration.setBackground(CustomColors.BACKGROUND2);
+		powerGeneration.setOpaque(true);
 		powerGeneration.addComponentListener(generationListener);
 
+		powerDistribution.setLayout(null);
+		powerDistribution.setBackground(CustomColors.BACKGROUND2);
 		powerDistribution.addComponentListener(distributionListener);
 
 		mainPowerPanel.setBackground(CustomColors.BACKGROUND1);
@@ -86,11 +84,9 @@ public class EPS extends JPanel implements UIScaling, SatelliteInfo {
 		mainPowerPanel.addTab("   Power Dist   ", powerDistribution);
 		mainPowerPanel.setSelectedComponent(powerGeneration);
 
-		powerGeneration.setBackground(CustomColors.BACKGROUND2);
-		powerDistribution.setBackground(CustomColors.BACKGROUND2);
+		timer.start();
 
 		this.add(mainPowerPanel, gbc.setLocation(0, 0).setSize(1, 1).setWeight(1.0, 1.0).setInsets(10, 10, 10, 10));
-
 		this.setBackground(CustomColors.BACKGROUND1);
 	}
 
@@ -109,15 +105,38 @@ public class EPS extends JPanel implements UIScaling, SatelliteInfo {
 		@Override
 		public void componentResized(ComponentEvent e) {
 
+			double voltage = 0.0;
+			double current = 0.0;
+			int y = 0;
 			FontMetrics fontMetrics = powerGeneration.getFontMetrics(powerGeneration.getFont());
-
-			for (int i = 0; i < 8; i++) {
-				solarPanels.get(i).setBackground(CustomColors.BACKGROUND1);
-				solarPanels.get(i).setBounds(solarPanels.get(Math.max(0, i-1)).getX() + 10, 10,
-						2 + fontMetrics.stringWidth(
-								solarPanels.get(i).getVoltage() + "V " + solarPanels.get(i).getCurrent() + "I"),
-						fontMetrics.getHeight() * 2 + 2);
+			for (int i = 0; i < solarPanels.size() / 2; i++) { // left 4 pV
+				voltage = solarPanels.get(i).getVoltage();
+				current = solarPanels.get(i).getCurrent();
+				String printValues = String.format("%.3f", voltage) + "V " + String.format("%.3f", current) + "A";
+				width = 2 + Math.max(fontMetrics.stringWidth(solarPanels.get(i).getName()),
+						fontMetrics.stringWidth(printValues));
+				height = fontMetrics.getHeight() * 2 + 4;
+				y = 10 + 10 * i + i * height;
+				solarPanels.get(i).setBounds(10, y, width, height);
+				pvWires.get(i).setBounds(10 + width, y + height / 2, powerGeneration.getWidth() / 2 - width - 10, 10);
 			}
+			for (int i = solarPanels.size() / 2; i < solarPanels.size(); i++) {// right 4 pV
+				voltage = solarPanels.get(i).getVoltage();
+				current = solarPanels.get(i).getCurrent();
+				String printValues = String.format("%.3f", voltage) + "V " + String.format("%.3f", current) + "A";
+				width = 2 + Math.max(fontMetrics.stringWidth(solarPanels.get(i).getName()),
+						fontMetrics.stringWidth(printValues));
+				height = fontMetrics.getHeight() * 2 + 4;
+				y = 10 + 10 * (i - solarPanels.size() / 2) + (i - solarPanels.size() / 2) * height;
+				solarPanels.get(i).setBounds(powerGeneration.getWidth() - 10 - width, y, width, height);
+				pvWires.get(i).setBounds(powerGeneration.getWidth() / 2, y + height / 2,
+						powerGeneration.getWidth() / 2 - width - 10, 10);
+			}
+
+			// int ySpace = i * (powerGeneration.getHeight() - solarPanels.size() * (height
+			// + 10))
+			// / solarPanels.size();
+
 			repaint();
 		}
 
@@ -154,7 +173,6 @@ public class EPS extends JPanel implements UIScaling, SatelliteInfo {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-
 			for (AnimationComponent movingComponent : movingComponents) {
 				movingComponent.updateFrame(timerDelay);
 			}
@@ -165,33 +183,52 @@ public class EPS extends JPanel implements UIScaling, SatelliteInfo {
 	public void updateUIScaling(UIScale uiScale) {
 
 		for (Component component : mainPowerPanel.getComponents()) {
-
 			if (component instanceof UIScaling) {
-
 				((UIScaling) component).updateUIScaling(uiScale);
 			}
 		}
 
+		Font bodyFont;
 		switch (uiScale) {
+		default:
 		case SCALE_100:
+			bodyFont = Fonts.BODY_16;
 			mainPowerPanel.setFont(Fonts.TITLE_16);
 			break;
 		case SCALE_150:
+			bodyFont = Fonts.BODY_24;
 			mainPowerPanel.setFont(Fonts.TITLE_24);
 			break;
 		case SCALE_200:
+			bodyFont = Fonts.BODY_32;
 			mainPowerPanel.setFont(Fonts.TITLE_32);
 			break;
 		case SCALE_300:
+			bodyFont = Fonts.BODY_48;
 			mainPowerPanel.setFont(Fonts.TITLE_48);
 			break;
 		case SCALE_75:
+			bodyFont = Fonts.BODY_12;
 			mainPowerPanel.setFont(Fonts.TITLE_12);
-			break;
-		default:
 			break;
 		}
 
+		for (Component component : this.getComponents()) {// JPanel - mainPowerPanel
+
+			for (Component subComponent : ((Container) component).getComponents()) {// JTabbedPane - powerGen/Dist
+				if (subComponent instanceof UIScaling) {
+					((UIScaling) subComponent).updateUIScaling(uiScale);
+				} else if (subComponent instanceof JPanel) {
+					subComponent.setFont(bodyFont);
+					for (Component subsubComponent : ((Container) subComponent).getComponents()) {
+						if (subsubComponent instanceof SolarPanel) {
+							((UIScaling) subsubComponent).updateUIScaling(uiScale);
+							subsubComponent.setFont(bodyFont);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public void updateSatellite(CougSat satellite) {
@@ -203,5 +240,20 @@ public class EPS extends JPanel implements UIScaling, SatelliteInfo {
 			solarPanel.setCurrent(satellite.getPVCurrent(i));
 			i++;
 		}
+		batts.get(0).setVoltage(satellite.getBatteryAVoltage());
+		// batts.get(0).setPower();
+		batts.get(0).setCurrent(satellite.getBatteryACurrent());
+		batts.get(1).setVoltage(satellite.getBatteryBVoltage());
+		batts.get(1).setCurrent(satellite.getBatteryBCurrent());
+		// pvWires.add(new Wire("pvWire" + i));
+		// mppList.add(new Regulator("mppt"));
 	}
+	// public int getHeight()
+	// {
+	// return height;
+	// }
+	// public void setHeight(int newHeight)
+	// {
+	// height = newHeight;
+	// }
 }

@@ -12,13 +12,12 @@ public class Wire extends JPanel implements AnimationComponent {
 	private static final long serialVersionUID = 1L;
 	private double current = 0.0;
 	private double voltage = 0.0;
+	private String varName = "";
 	private double animationTime = 100;
 
-	public Wire(int x, int y, int width, int height, double current, double voltage) {
+	public Wire(String name) {
 
-		this.setBounds(x, y, width, height);
-		this.setCurrent(current);
-		this.setVoltage(voltage);
+		varName = name;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -31,26 +30,28 @@ public class Wire extends JPanel implements AnimationComponent {
 
 	}
 
-	public void changeDimensions(int x, int y, int width, int height, double newCurrent, double newVoltage ) {
-		voltage = newVoltage;
-		current = newCurrent;
-		this.setBounds(x, y, width, height);
+	public String getName() {
+		return varName;
+	}
+
+	public void setName(String name) {
+		this.varName = name;
 	}
 
 	public double getCurrent() {
 		return current;
 	}
 
-	public void setCurrent(double current) {
-		this.current = current;
+	public void setCurrent(double newCurrent) {
+		this.current = newCurrent;
 	}
 
 	public double getVoltage() {
 		return voltage;
 	}
 
-	public void setVoltage(double voltage) {
-		this.voltage = voltage;
+	public void setVoltage(double newVoltage) {
+		this.voltage = newVoltage;
 	}
 
 	@Override
@@ -59,5 +60,5 @@ public class Wire extends JPanel implements AnimationComponent {
 		repaint();
 	}
 
-//solar panel, output, regulator, battery
+	// solar panel, output, regulator, battery
 }

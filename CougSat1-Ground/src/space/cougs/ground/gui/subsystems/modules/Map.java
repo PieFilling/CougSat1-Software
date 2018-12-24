@@ -27,8 +27,8 @@ public class Map extends JComponent implements UIScaling {
 	private double lattitude;
 	private int diameter = 6;
 	private final double aspectRatio;
-	private final String longitudeText = String.format("%11.6f° E", this.longitude);
-	private final String lattitudeText = String.format("%10.6f° N", this.lattitude);
+	private final String longitudeText = String.format("%11.6fï¿½ E", this.longitude);
+	private final String lattitudeText = String.format("%10.6fï¿½ N", this.lattitude);
 
 	public Map(double lattitude, double longitude, Double aspectRatio) {
 
@@ -103,7 +103,14 @@ public class Map extends JComponent implements UIScaling {
 		x1 = (this.getWidth() / 2) - (newWidth / 2);
 		x2 = x1 + newWidth;
 
-		g2d.drawImage(map, x1, y1, x2, y2, 0, 0, map.getWidth(), map.getHeight(), null);
+		if (map != null) {
+			g2d.drawImage(map, x1, y1, x2, y2, 0, 0, map.getWidth(), map.getHeight(), null);
+		} else {
+			g2d.fillRect(0, 0, getWidth(), getHeight());
+			String Error = "Error: Map Image Not Found";
+			g2d.drawString(Error, getWidth() / 2 - fontMetrics.stringWidth(Error) / 2,
+					getHeight() / 2 - fontMetrics.getAscent() / 2);
+		}
 
 		int x = insets.left;
 		int y = y2 + fontMetrics.getAscent();
