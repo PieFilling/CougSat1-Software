@@ -1,7 +1,6 @@
 package space.cougs.ground.gui.subsystems;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.GridBagLayout;
@@ -12,11 +11,11 @@ import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.Timer;
 
 import space.cougs.ground.gui.UIScaling;
+import space.cougs.ground.gui.subsystems.modules.CISModules.CISPanel;
+import space.cougs.ground.gui.subsystems.modules.CISModules.CISTabbedPane;
 import space.cougs.ground.gui.subsystems.modules.power.Battery;
 import space.cougs.ground.gui.subsystems.modules.power.Regulator;
 import space.cougs.ground.gui.subsystems.modules.power.SolarPanel;
@@ -26,13 +25,14 @@ import space.cougs.ground.gui.utils.CustomColors;
 import space.cougs.ground.gui.utils.Fonts;
 import space.cougs.ground.gui.utils.GridBagConstraintsWrapper;
 import space.cougs.ground.satellites.CougSat;
+import space.cougs.ground.utils.Units;
 
-public class EPS extends JPanel implements UIScaling, SatelliteInfo {
+public class EPS extends CISPanel implements UIScaling, SatelliteInfo {
 
 	private static final long serialVersionUID = 1L;
-	private static final JTabbedPane mainPowerPanel = new JTabbedPane();
-	private static final JPanel powerGeneration = new JPanel();
-	private static final JPanel powerDistribution = new JPanel();
+	private static final CISTabbedPane mainPowerPanel = new CISTabbedPane();
+	private static final CISPanel powerGeneration = new CISPanel();
+	private static final CISPanel powerDistribution = new CISPanel();
 
 	private List<AnimationComponent> movingComponents = new ArrayList<AnimationComponent>();
 	private static final double timerDelay = (1 / 10);
@@ -109,10 +109,11 @@ public class EPS extends JPanel implements UIScaling, SatelliteInfo {
 			double current = 0.0;
 			int y = 0;
 			FontMetrics fontMetrics = powerGeneration.getFontMetrics(powerGeneration.getFont());
+
 			for (int i = 0; i < solarPanels.size() / 2; i++) { // left 4 pV
 				voltage = solarPanels.get(i).getVoltage();
 				current = solarPanels.get(i).getCurrent();
-				String printValues = String.format("%.3f", voltage) + "V " + String.format("%.3f", current) + "A";
+				String printValues = Units.voltagePrefix(voltage) + " " + Units.currentPrefix(current);
 				width = 2 + Math.max(fontMetrics.stringWidth(solarPanels.get(i).getName()),
 						fontMetrics.stringWidth(printValues));
 				height = fontMetrics.getHeight() * 2 + 4;
@@ -123,7 +124,7 @@ public class EPS extends JPanel implements UIScaling, SatelliteInfo {
 			for (int i = solarPanels.size() / 2; i < solarPanels.size(); i++) {// right 4 pV
 				voltage = solarPanels.get(i).getVoltage();
 				current = solarPanels.get(i).getCurrent();
-				String printValues = String.format("%.3f", voltage) + "V " + String.format("%.3f", current) + "A";
+				String printValues = Units.voltagePrefix(voltage) + " " + Units.currentPrefix(current);
 				width = 2 + Math.max(fontMetrics.stringWidth(solarPanels.get(i).getName()),
 						fontMetrics.stringWidth(printValues));
 				height = fontMetrics.getHeight() * 2 + 4;
@@ -132,10 +133,6 @@ public class EPS extends JPanel implements UIScaling, SatelliteInfo {
 				pvWires.get(i).setBounds(powerGeneration.getWidth() / 2, y + height / 2,
 						powerGeneration.getWidth() / 2 - width - 10, 10);
 			}
-
-			// int ySpace = i * (powerGeneration.getHeight() - solarPanels.size() * (height
-			// + 10))
-			// / solarPanels.size();
 
 			repaint();
 		}
@@ -182,12 +179,6 @@ public class EPS extends JPanel implements UIScaling, SatelliteInfo {
 	@Override
 	public void updateUIScaling(UIScale uiScale) {
 
-		for (Component component : mainPowerPanel.getComponents()) {
-			if (component instanceof UIScaling) {
-				((UIScaling) component).updateUIScaling(uiScale);
-			}
-		}
-
 		Font bodyFont;
 		switch (uiScale) {
 		default:
@@ -213,47 +204,30 @@ public class EPS extends JPanel implements UIScaling, SatelliteInfo {
 			break;
 		}
 
-		for (Component component : this.getComponents()) {// JPanel - mainPowerPanel
-
-			for (Component subComponent : ((Container) component).getComponents()) {// JTabbedPane - powerGen/Dist
-				if (subComponent instanceof UIScaling) {
-					((UIScaling) subComponent).updateUIScaling(uiScale);
-				} else if (subComponent instanceof JPanel) {
-					subComponent.setFont(bodyFont);
-					for (Component subsubComponent : ((Container) subComponent).getComponents()) {
-						if (subsubComponent instanceof SolarPanel) {
-							((UIScaling) subsubComponent).updateUIScaling(uiScale);
-							subsubComponent.setFont(bodyFont);
-						}
-					}
-				}
+		for (Component child : this.getComponents()) {
+			if (child instanceof CISPanel) {
+				child.setFont(bodyFont);
+			} else if (child instanceof SolarPanel) {
+				child.setFont(bodyFont);
+			}
+			if (child instanceof UIScaling) {
+				((UIScaling) child).updateUIScaling(uiScale);
 			}
 		}
 	}
 
 	public void updateSatellite(CougSat satellite) {
 
-		int i = 0;
 		for (SolarPanel solarPanel : solarPanels) {
-
-			solarPanel.setVoltage(satellite.getPVVoltage(i));
-			solarPanel.setCurrent(satellite.getPVCurrent(i));
+			int i = 0;
+			solarPanel.setVoltage(satellite.getEps().getPVVoltage(i));
+			solarPanel.setCurrent(satellite.getEps().getPVCurrent(i));
 			i++;
 		}
-		batts.get(0).setVoltage(satellite.getBatteryAVoltage());
-		// batts.get(0).setPower();
-		batts.get(0).setCurrent(satellite.getBatteryACurrent());
-		batts.get(1).setVoltage(satellite.getBatteryBVoltage());
-		batts.get(1).setCurrent(satellite.getBatteryBCurrent());
-		// pvWires.add(new Wire("pvWire" + i));
-		// mppList.add(new Regulator("mppt"));
+		batts.get(0).setVoltage(satellite.getEps().getBatteryAVoltage());
+		batts.get(0).setCurrent(satellite.getEps().getBatteryACurrent());
+		batts.get(1).setVoltage(satellite.getEps().getBatteryBVoltage());
+		batts.get(1).setCurrent(satellite.getEps().getBatteryBCurrent());
+
 	}
-	// public int getHeight()
-	// {
-	// return height;
-	// }
-	// public void setHeight(int newHeight)
-	// {
-	// height = newHeight;
-	// }
 }

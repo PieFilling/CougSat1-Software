@@ -6,9 +6,9 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
-public class ImageModule extends JPanel {
+public class ImageModule extends JComponent {
 
 	private static final long serialVersionUID = 1L;
 	private BufferedImage image;

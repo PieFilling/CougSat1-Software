@@ -2,7 +2,6 @@
 package space.cougs.ground.gui.subsystems;
 
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -11,17 +10,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JPanel;
-
 import space.cougs.ground.gui.UIScaling;
 import space.cougs.ground.gui.subsystems.modules.ListFiles;
 import space.cougs.ground.gui.subsystems.modules.PhotoViewer;
 import space.cougs.ground.gui.subsystems.modules.ThumbnailGrid;
+import space.cougs.ground.gui.subsystems.modules.CISModules.CISPanel;
 import space.cougs.ground.gui.utils.CustomColors;
-import space.cougs.ground.gui.utils.Fonts;
-import space.cougs.ground.satellites.CougSat;
 
-public class Camera extends JPanel implements UIScaling, SatelliteInfo {
+public class Camera extends CISPanel implements UIScaling {
 
 	private static final long serialVersionUID = 1L;
 
@@ -76,7 +72,6 @@ public class Camera extends JPanel implements UIScaling, SatelliteInfo {
 			photoViewer.setBounds(thumbnailWidth, border, getWidth() - thumbnailWidth - border,
 					getHeight() - border * 2);
 			repaint();
-
 		}
 
 		@Override
@@ -98,39 +93,10 @@ public class Camera extends JPanel implements UIScaling, SatelliteInfo {
 
 	@Override
 	public void updateUIScaling(UIScale uiScale) {
-
-		Font bodyFont = Fonts.BODY_16;
-
-		switch (uiScale) {
-		case SCALE_100:
-			bodyFont = Fonts.BODY_16;
-			break;
-		case SCALE_150:
-			bodyFont = Fonts.BODY_24;
-			break;
-		case SCALE_200:
-			bodyFont = Fonts.BODY_32;
-			break;
-		case SCALE_300:
-			bodyFont = Fonts.BODY_48;
-			break;
-		case SCALE_75:
-			bodyFont = Fonts.BODY_12;
-			break;
-		default:
-			break;
-		}
-		for (Component component : this.getComponents()) {
-			if (component instanceof JPanel) {
-				component.setFont(bodyFont);
+		for (Component child : this.getComponents()) {
+			if (child instanceof UIScaling) {
+				((UIScaling) child).updateUIScaling(uiScale);
 			}
 		}
-
-	}
-
-	@Override
-	public void updateSatellite(CougSat satellite) {
-		// TODO Auto-generated method stub
-
 	}
 }

@@ -3,7 +3,6 @@ package space.cougs.ground.gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -12,8 +11,6 @@ import java.awt.event.ActionListener;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import space.cougs.ground.gui.subsystems.ADCS;
@@ -25,11 +22,13 @@ import space.cougs.ground.gui.subsystems.Health;
 import space.cougs.ground.gui.subsystems.IFJR;
 import space.cougs.ground.gui.subsystems.Plant;
 import space.cougs.ground.gui.subsystems.SatelliteInfo;
+import space.cougs.ground.gui.subsystems.modules.CISModules.CISButton;
+import space.cougs.ground.gui.subsystems.modules.CISModules.CISPanel;
 import space.cougs.ground.gui.utils.CustomColors;
 import space.cougs.ground.gui.utils.Fonts;
 import space.cougs.ground.satellites.CougSat;
 
-class CougSat1GUI extends JPanel implements UIScaling, SatelliteInfo {
+class CougSat1GUI extends CISPanel implements UIScaling, SatelliteInfo {
 
 	private static final long serialVersionUID = 1L;
 
@@ -42,8 +41,7 @@ class CougSat1GUI extends JPanel implements UIScaling, SatelliteInfo {
 	private final Plant plant = new Plant(); // images of plant
 	private final EPS eps = new EPS(); // power?
 
-	private final JPanel subSystemWrapper = new JPanel(new CardLayout());
-
+	private final CISPanel subSystemWrapper = new CISPanel(new CardLayout());
 	private final CardSwitcher cardSwitcher = new CardSwitcher();
 
 	CougSat1GUI() {
@@ -63,23 +61,22 @@ class CougSat1GUI extends JPanel implements UIScaling, SatelliteInfo {
 
 		this.add(subSystemWrapper, BorderLayout.CENTER);
 		this.add(cardSwitcher, BorderLayout.LINE_START);
-
 		this.setBackground(CustomColors.BACKGROUND1);
 
 	}
 
-	private class CardSwitcher extends JPanel implements ActionListener, UIScaling {
+	private class CardSwitcher extends CISPanel implements ActionListener, UIScaling {
 
 		private static final long serialVersionUID = 1L;
 
-		private final JButton healthButton = new JButton("Health");
-		private final JButton adcsButton = new JButton("Attitude");
-		private final JButton ifjrButton = new JButton("IFJR");
-		private final JButton cdhButton = new JButton("Computer");
-		private final JButton commsButton = new JButton("Radio");
-		private final JButton cameraButton = new JButton("Camera");
-		private final JButton plantButton = new JButton("Plant");
-		private final JButton epsButton = new JButton("Power");
+		private final CISButton healthButton = new CISButton("Health");
+		private final CISButton adcsButton = new CISButton("Attitude");
+		private final CISButton ifjrButton = new CISButton("IFJR");
+		private final CISButton cdhButton = new CISButton("Computer");
+		private final CISButton commsButton = new CISButton("Radio");
+		private final CISButton cameraButton = new CISButton("Camera");
+		private final CISButton plantButton = new CISButton("Plant");
+		private final CISButton epsButton = new CISButton("Power");
 
 		private CardSwitcher() {
 
@@ -96,14 +93,12 @@ class CougSat1GUI extends JPanel implements UIScaling, SatelliteInfo {
 			this.add(plantButton);
 
 			for (Component component : this.getComponents()) {
-				if (component instanceof JButton) {
+				if (component instanceof CISButton) {
 					((AbstractButton) component).setHorizontalAlignment(SwingConstants.LEFT);
-					((JButton) component).addActionListener(this);
-					((JButton) component).setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-					component.setForeground(CustomColors.TEXT1);
-					component.setFont(Fonts.BODY_24);
-					((JButton) component).setIconTextGap(15);
-					((JButton) component).setFocusable(false);
+					((CISButton) component).addActionListener(this);
+					((CISButton) component).setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+					((CISButton) component).setIconTextGap(15);
+					((CISButton) component).setFocusable(false);
 				}
 			}
 			healthButton.doClick();
@@ -140,68 +135,39 @@ class CougSat1GUI extends JPanel implements UIScaling, SatelliteInfo {
 			}
 
 			for (Component component : this.getComponents()) {
-				if (component instanceof JButton) {
-
+				if (component instanceof CISButton) {
 					String iconFilePath = iconFolderPath + ((AbstractButton) component).getText() + ".png";
-
 					component.setFont(font);
-					((JButton) component).setIcon(new ImageIcon(iconFilePath));
-
+					((CISButton) component).setIcon(new ImageIcon(iconFilePath));
 				}
 			}
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent evt) {
-
 			((CardLayout) subSystemWrapper.getLayout()).show(subSystemWrapper, evt.getActionCommand());
-
 			for (Component component : this.getComponents()) {
-
-				if (component instanceof JButton) {
-
+				if (component instanceof CISButton) {
 					component.setBackground(CustomColors.BUTTON_INACTIVE);
 				}
 			}
-
-			((JButton) evt.getSource()).setBackground(CustomColors.BUTTON_ACTIVE);
+			((CISButton) evt.getSource()).setBackground(CustomColors.BUTTON_ACTIVE);
 		}
-
 	}
 
 	@Override
 	public void updateUIScaling(UIScale uiScale) {
-
-		for (Component component : this.getComponents()) {
-
-			if (component instanceof UIScaling) {
-
-				((UIScaling) component).updateUIScaling(uiScale);
-
-			}
-			if (component instanceof JPanel) {
-
-				for (Component subComponent : ((Container) component).getComponents()) {
-
-					if (subComponent instanceof UIScaling) {
-
-						((UIScaling) subComponent).updateUIScaling(uiScale);
-
-					}
-				}
-			}
+		for (Component child : this.getComponents()) {
+			if (child instanceof UIScaling)
+				((UIScaling) child).updateUIScaling(uiScale);
 		}
 	}
 
 	@Override
 	public void updateSatellite(CougSat satellite) {
-
 		for (Component component : subSystemWrapper.getComponents()) {
-
 			if (component instanceof SatelliteInfo) {
-
 				((SatelliteInfo) component).updateSatellite(satellite);
-
 			}
 		}
 		this.repaint();

@@ -3,11 +3,11 @@ package space.cougs.ground.gui.subsystems.modules.power;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
 import space.cougs.ground.gui.utils.AnimationComponent;
 
-public class Wire extends JPanel implements AnimationComponent {
+public class Wire extends JComponent implements AnimationComponent {
 
 	private static final long serialVersionUID = 1L;
 	private double current = 0.0;

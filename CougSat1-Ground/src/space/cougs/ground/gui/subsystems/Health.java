@@ -1,42 +1,40 @@
 package space.cougs.ground.gui.subsystems;
 
 import java.awt.Component;
-import java.awt.Container;
-import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import space.cougs.ground.gui.UIScaling;
 import space.cougs.ground.gui.subsystems.modules.HorizontalText;
 import space.cougs.ground.gui.subsystems.modules.Map;
 import space.cougs.ground.gui.subsystems.modules.SingleVerticalBarGraph;
-import space.cougs.ground.gui.subsystems.modules.TitleLabel;
+import space.cougs.ground.gui.subsystems.modules.CISModules.BodyLabel;
+import space.cougs.ground.gui.subsystems.modules.CISModules.CISPanel;
+import space.cougs.ground.gui.subsystems.modules.CISModules.TitleLabel;
 import space.cougs.ground.gui.utils.CustomColors;
-import space.cougs.ground.gui.utils.Fonts;
 import space.cougs.ground.gui.utils.GridBagConstraintsWrapper;
 import space.cougs.ground.satellites.CougSat;
+import space.cougs.ground.utils.Units;
 
-@SuppressWarnings("serial")
-public class Health extends JPanel implements UIScaling, SatelliteInfo {
+public class Health extends CISPanel implements UIScaling, SatelliteInfo {
 
-	private final JPanel ihu = new JPanel();
-	private final JPanel temperature = new JPanel();
-	private final JPanel adcs = new JPanel();
-	private final JPanel comms = new JPanel();
-	private final JPanel power = new JPanel();
+	private static final long serialVersionUID = 1L;
+	private final CISPanel ihu = new CISPanel();
+	private final CISPanel temperature = new CISPanel();
+	private final CISPanel adcs = new CISPanel();
+	private final CISPanel comms = new CISPanel();
+	private final CISPanel power = new CISPanel();
 
-	private final HorizontalText mode = new HorizontalText("Mode:", "        ", 0.5);
-	private final HorizontalText time = new HorizontalText("Time:", "        ", 0.5);
-	private final HorizontalText SD = new HorizontalText("SD:", "        ", 0.5);
-	private final HorizontalText reset = new HorizontalText("Reset:", "        ", 0.5);
-	private final HorizontalText status = new HorizontalText("Status:", "        ", 0.5);
+	private final HorizontalText mode = new HorizontalText("Mode:", 0.5);
+	private final HorizontalText time = new HorizontalText("Time:", 0.5);
+	private final HorizontalText SD = new HorizontalText("SD:", 0.5);
+	private final HorizontalText reset = new HorizontalText("Reset:", 0.5);
+	private final HorizontalText status = new HorizontalText("Status:", 0.5);
 
 	private final SingleVerticalBarGraph rx = new SingleVerticalBarGraph("RX (mW)", 0, 100, 10, 0.6, false, 1.0, 0.2,
 			1.0, 0.1);
@@ -121,20 +119,20 @@ public class Health extends JPanel implements UIScaling, SatelliteInfo {
 		comms.add(new TitleLabel("Radio", SwingConstants.CENTER),
 				gbc.setLocation(0, 0).setSize(3, 1).setWeight(0.0, 0.0).setInsets(5, 5, 5, 5));
 		comms.add(rx, gbc.setLocation(0, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		comms.add(tx, gbc.setLocation(1, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		comms.add(snr, gbc.setLocation(2, 1).setSize(1, 1).setWeight(1.0, 1.0));
+		comms.add(tx, gbc.setLocation(1, 1));
+		comms.add(snr, gbc.setLocation(2, 1));
 
 		temperature.setLayout(new GridBagLayout());
 
-		temperature.add(new TitleLabel("Temperature (°C)", SwingConstants.CENTER),
+		temperature.add(new TitleLabel("Temperature (\u00B0C)", SwingConstants.CENTER),
 				gbc.setLocation(0, 0).setSize(14, 1).setWeight(0.0, 0.0));
 		temperature.add(ihuTemp, gbc.setLocation(1, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		temperature.add(adcsTemp, gbc.setLocation(2, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		temperature.add(ifjrTemp, gbc.setLocation(3, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		temperature.add(pmicTemp, gbc.setLocation(4, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		temperature.add(commsTemp, gbc.setLocation(5, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		temperature.add(batteryATemp, gbc.setLocation(6, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		temperature.add(batteryBTemp, gbc.setLocation(7, 1).setSize(1, 1).setWeight(1.0, 1.0));
+		temperature.add(adcsTemp, gbc.setLocation(2, 1));
+		temperature.add(ifjrTemp, gbc.setLocation(3, 1));
+		temperature.add(pmicTemp, gbc.setLocation(4, 1));
+		temperature.add(commsTemp, gbc.setLocation(5, 1));
+		temperature.add(batteryATemp, gbc.setLocation(6, 1));
+		temperature.add(batteryBTemp, gbc.setLocation(7, 1));
 
 		for (int i = 0; i < 8; i++) {
 
@@ -147,31 +145,28 @@ public class Health extends JPanel implements UIScaling, SatelliteInfo {
 		power.add(new TitleLabel("Power", SwingConstants.CENTER),
 				gbc.setLocation(0, 0).setSize(14, 1).setWeight(0.0, 0.0));
 		power.add(avgPVVoltageIn, gbc.setLocation(1, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		power.add(sumPVCurrent, gbc.setLocation(2, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		power.add(sumPR3V3Current, gbc.setLocation(3, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		power.add(sumBatteryPR, gbc.setLocation(4, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		power.add(sumPV3V3Current, gbc.setLocation(5, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		power.add(battHeaterA, gbc.setLocation(6, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		power.add(battHeaterB, gbc.setLocation(7, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		power.add(prDeployCurrent, gbc.setLocation(8, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		power.add(battAVoltage, gbc.setLocation(1, 2).setSize(1, 1).setWeight(1.0, 1.0).setInsets(5, 5, 0, 5));
-		power.add(battACurrent, gbc.setLocation(2, 2).setSize(1, 1).setWeight(1.0, 1.0));
-		power.add(battBVoltage, gbc.setLocation(3, 2).setSize(1, 1).setWeight(1.0, 1.0));
-		power.add(battBCurrent, gbc.setLocation(4, 2).setSize(1, 1).setWeight(1.0, 1.0));
-		power.add(regulator3V3AVoltage, gbc.setLocation(5, 2).setSize(1, 1).setWeight(1.0, 1.0));
-		power.add(regulator3V3ACurrent, gbc.setLocation(6, 2).setSize(1, 1).setWeight(1.0, 1.0));
-		power.add(regulator3V3BVoltage, gbc.setLocation(7, 2).setSize(1, 1).setWeight(1.0, 1.0));
-		power.add(regulator3V3BCurrent, gbc.setLocation(8, 2).setSize(1, 1).setWeight(1.0, 1.0));
-		power.add(prDeployCurrent, gbc.setLocation(8, 1).setSize(1, 1).setWeight(1.0, 1.0).setInsets(5, 5, 5, 5));
+		power.add(sumPVCurrent, gbc.setLocation(2, 1));
+		power.add(sumPR3V3Current, gbc.setLocation(3, 1));
+		power.add(sumBatteryPR, gbc.setLocation(4, 1));
+		power.add(sumPV3V3Current, gbc.setLocation(5, 1));
+		power.add(battHeaterA, gbc.setLocation(6, 1));
+		power.add(battHeaterB, gbc.setLocation(7, 1));
+		power.add(prDeployCurrent, gbc.setLocation(8, 1));
+		power.add(battAVoltage, gbc.setLocation(1, 2).setInsets(5, 5, 0, 5));
+		power.add(battACurrent, gbc.setLocation(2, 2));
+		power.add(battBVoltage, gbc.setLocation(3, 2));
+		power.add(battBCurrent, gbc.setLocation(4, 2));
+		power.add(regulator3V3AVoltage, gbc.setLocation(5, 2));
+		power.add(regulator3V3ACurrent, gbc.setLocation(6, 2));
+		power.add(regulator3V3BVoltage, gbc.setLocation(7, 2));
+		power.add(regulator3V3BCurrent, gbc.setLocation(8, 2));
+		power.add(prDeployCurrent, gbc.setLocation(8, 1).setInsets(5, 5, 5, 5));
 
-		power.add(new JLabel(" Battery A ", SwingConstants.CENTER),
+		power.add(new BodyLabel(" Battery A ", SwingConstants.CENTER),
 				gbc.setLocation(1, 4).setSize(2, 1).setWeight(0.0, 0.0).setInsets(0, 5, 5, 5));
-		power.add(new JLabel(" Battery B ", SwingConstants.CENTER),
-				gbc.setLocation(3, 4).setSize(2, 1).setWeight(0.0, 0.0));
-		power.add(new JLabel("Regulator A", SwingConstants.CENTER),
-				gbc.setLocation(5, 4).setSize(2, 1).setWeight(0.0, 0.0));
-		power.add(new JLabel("Regulator B", SwingConstants.CENTER),
-				gbc.setLocation(7, 4).setSize(2, 1).setWeight(0.0, 0.0));
+		power.add(new BodyLabel(" Battery B ", SwingConstants.CENTER), gbc.setLocation(3, 4));
+		power.add(new BodyLabel("Regulator A", SwingConstants.CENTER), gbc.setLocation(5, 4));
+		power.add(new BodyLabel("Regulator B", SwingConstants.CENTER), gbc.setLocation(7, 4));
 
 		avgPVVoltageIn.setToolTipText("Solar Panel Average Voltage In");
 		sumPVCurrent.setToolTipText("Sum of Solar Panel Current");
@@ -194,127 +189,67 @@ public class Health extends JPanel implements UIScaling, SatelliteInfo {
 
 		adcs.add(new TitleLabel("Attitude", SwingConstants.CENTER),
 				gbc.setLocation(0, 0).setSize(1, 1).setWeight(0.0, 0.0).setInsets(5, 5, 5, 5));
-		adcs.add(map, gbc.setLocation(0, 1).setSize(1, 1).setWeight(1.0, 1.0));
+		adcs.add(map, gbc.setLocation(0, 1).setWeight(1.0, 1.0));
 
-		this.add(ihu, gbc.setLocation(0, 0).setSize(1, 1).setWeight(0.0, 0.0).setInsets(0, 0, 5, 5));
+		this.add(ihu, gbc.setLocation(0, 0).setWeight(0.0, 0.0).setInsets(0, 0, 5, 5));
 		this.add(adcs, gbc.setLocation(0, 1).setSize(2, 2).setWeight(0.0, 1.0).setInsets(5, 0, 0, 5));
 		this.add(temperature, gbc.setLocation(2, 2).setSize(1, 2).setWeight(1.0, 1.0).setInsets(5, 5, 0, 0));
 		this.add(comms, gbc.setLocation(1, 0).setSize(1, 1).setWeight(0.0, 0.0).setInsets(0, 5, 5, 5));
 		this.add(power, gbc.setLocation(2, 0).setSize(1, 2).setWeight(1.0, 1.0).setInsets(0, 5, 5, 0));
-
-		ihu.setBackground(CustomColors.BACKGROUND2);
-		temperature.setBackground(CustomColors.BACKGROUND2);
-		adcs.setBackground(CustomColors.BACKGROUND2);
-		comms.setBackground(CustomColors.BACKGROUND2);
-		power.setBackground(CustomColors.BACKGROUND2);
-
-		for (Component component : this.getComponents()) {
-
-			if (component instanceof JPanel) {
-
-				for (Component subComponent : ((Container) component).getComponents()) {
-
-					if (subComponent instanceof JLabel) {
-
-						subComponent.setForeground(CustomColors.TEXT1);
-					}
-				}
-			}
-		}
 	}
 
 	@Override
 	public void updateUIScaling(UIScale uiScale) {
-
-		Font titleFont = Fonts.BODY_16;
-
-		switch (uiScale) {
-		case SCALE_100:
-			titleFont = Fonts.BODY_16;
-			break;
-		case SCALE_150:
-			titleFont = Fonts.BODY_24;
-			break;
-		case SCALE_200:
-			titleFont = Fonts.BODY_32;
-			break;
-		case SCALE_300:
-			titleFont = Fonts.BODY_48;
-			break;
-		case SCALE_75:
-			titleFont = Fonts.BODY_12;
-			break;
-		default:
-			break;
-		}
-
-		for (Component component : this.getComponents()) {
-
-			if (component instanceof UIScaling) {
-
-				((UIScaling) component).updateUIScaling(uiScale);
-
-			}
-			if (component instanceof JPanel) {
-
-				for (Component subComponent : ((Container) component).getComponents()) {
-
-					if (subComponent instanceof UIScaling) {
-
-						((UIScaling) subComponent).updateUIScaling(uiScale);
-
-					} else if (subComponent instanceof JLabel && !(subComponent instanceof TitleLabel)) {
-
-						subComponent.setFont(titleFont);
-					}
-				}
-			}
+		for (Component child : this.getComponents()) {
+			if (child instanceof UIScaling)
+				((UIScaling) child).updateUIScaling(uiScale);
 		}
 	}
 
 	@Override
 	public void updateSatellite(CougSat satellite) {
 
-		mode.setValue(satellite.getMode());
-		time.setValue(satellite.getTime());
-		SD.setValue(String.valueOf(satellite.getSDCard()));
-		reset.setValue(String.valueOf(satellite.getResetCount()));
-		status.setValue(satellite.getErrorStatus().toString());
+		mode.setValue(satellite.getCdh().getMode());
 
-		rx.setValue(satellite.getRXPower() * 1000, CustomColors.BAR_DEFAULT);
-		tx.setValue(satellite.getTXPower() * 1000, CustomColors.BAR_DEFAULT);
-		snr.setValue(satellite.getRXSNR(), CustomColors.BAR_DEFAULT);
+		time.setValue(Units.timeToString(satellite.getCdh().getTime()));
+		SD.setValue(Units.bytePrefix(satellite.getCdh().getSDCard()));
+		reset.setValue(String.valueOf(satellite.getCdh().getResetCount()));
+		status.setValue(satellite.getCdh().getErrorStatus().toString());
 
-		ihuTemp.setValue(satellite.getIHUTemp());
-		adcsTemp.setValue(satellite.getADCSTemp());
-		ifjrTemp.setValue(satellite.getIFJRTemp());
-		pmicTemp.setValue(satellite.getPMICTemp());
-		commsTemp.setValue(satellite.getCommsTemp());
-		batteryATemp.setValue(satellite.getBatteryATemp());
-		batteryBTemp.setValue(satellite.getBatteryBTemp());
+		rx.setValue(satellite.getComms().getRXPower() * 1000, CustomColors.BAR_DEFAULT);
+		tx.setValue(satellite.getComms().getTX230Power() * 1000, CustomColors.BAR_DEFAULT);
+		snr.setValue(satellite.getComms().getRXSNR(), CustomColors.BAR_DEFAULT);
+
+		ihuTemp.setValue(satellite.getEcs().getIHUTemp());
+		adcsTemp.setValue(satellite.getEcs().getADCSTemp());
+		ifjrTemp.setValue(satellite.getEcs().getIFJRTemp());
+		pmicTemp.setValue(satellite.getEcs().getPMICTemp());
+		commsTemp.setValue(satellite.getEcs().getCommsTemp());
+		batteryATemp.setValue(satellite.getEcs().getBatteryATemp());
+		batteryBTemp.setValue(satellite.getEcs().getBatteryBTemp());
 
 		for (int i = 0; i < 8; i++) {
-			pvTemps.get(i).setValue(satellite.getPVTemp(i));
+			pvTemps.get(i).setValue(satellite.getEcs().getPVTemp(i));
 		}
 
-		avgPVVoltageIn.setValue(satellite.getPVVoltageIn());
-		sumPVCurrent.setValue(satellite.getPVCurrent());
-		sumPR3V3Current.setValue(satellite.getPR3V3Current());
-		sumBatteryPR.setValue(satellite.getBatteryPR());
-		sumPV3V3Current.setValue(satellite.getPV3V3Current());
+		avgPVVoltageIn.setValue(satellite.getEps().getPVVoltageIn());
+		sumPVCurrent.setValue(satellite.getEps().getPVCurrent());
+		sumPR3V3Current.setValue(satellite.getEps().getPR3V3Current());
+		sumBatteryPR.setValue(satellite.getEps().getBatteryPR());
+		sumPV3V3Current.setValue(satellite.getEps().getPV3V3Current());
 
-		battHeaterA.setValue(satellite.getPRBatteryHeaterACurrent());
-		battHeaterB.setValue(satellite.getPRBatteryHeaterBCurrent());
-		prDeployCurrent.setValue(satellite.getPRDeployablesCurrent());
-		battACurrent.setValue(satellite.getBatteryACurrent());
-		battAVoltage.setValue(satellite.getBatteryAVoltage());
-		battBCurrent.setValue(satellite.getBatteryBCurrent());
-		battBVoltage.setValue(satellite.getBatteryBVoltage());
-		regulator3V3AVoltage.setValue(satellite.getReg3V3AVoltage());
-		regulator3V3ACurrent.setValue(satellite.getReg3V3ACurrent());
-		regulator3V3BVoltage.setValue(satellite.getReg3V3BVoltage());
-		regulator3V3BCurrent.setValue(satellite.getReg3V3BCurrent());
+		battHeaterA.setValue(satellite.getEps().getPRBHCurrentA());
+		battHeaterB.setValue(satellite.getEps().getPRBHCurrentB());
+		prDeployCurrent.setValue(satellite.getEps().getDeployablesCurrent());
+		battACurrent.setValue(satellite.getEps().getBatteryACurrent());
+		battAVoltage.setValue(satellite.getEps().getBatteryAVoltage());
+		battBCurrent.setValue(satellite.getEps().getBatteryBCurrent());
+		battBVoltage.setValue(satellite.getEps().getBatteryBVoltage());
+		regulator3V3AVoltage.setValue(satellite.getEps().getReg3v3VoltageA());
+		regulator3V3ACurrent.setValue(satellite.getEps().getReg3v3CurrentA());
+		regulator3V3BVoltage.setValue(satellite.getEps().getReg3v3VoltageB());
+		regulator3V3BCurrent.setValue(satellite.getEps().getReg3v3CurrentB());
 
-		map.setValue(satellite.getLattitude(), satellite.getLongitude());
+		map.setValue(satellite.getAdcs().getLatitude(), satellite.getAdcs().getLongitude());
 	}
 }

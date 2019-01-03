@@ -14,11 +14,9 @@ public class ListFiles {
 			if (fileEntry.isDirectory()) {
 				listFilesForFolder(fileEntry, files);
 			} else {
-
 				files.add(fileEntry);
 			}
 		}
 	}
-	
 
 }

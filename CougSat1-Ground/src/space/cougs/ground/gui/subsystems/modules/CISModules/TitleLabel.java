@@ -1,36 +1,47 @@
-package space.cougs.ground.gui.subsystems.modules;
+package space.cougs.ground.gui.subsystems.modules.CISModules;
+
+import java.awt.Color;
+import java.awt.Component;
 
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
 import space.cougs.ground.gui.UIScaling;
+import space.cougs.ground.gui.utils.CustomColors;
 import space.cougs.ground.gui.utils.Fonts;
 
 public class TitleLabel extends JLabel implements UIScaling {
 
 	private static final long serialVersionUID = 1L;
+	private static final Color color = CustomColors.TEXT1;
 
 	public TitleLabel() {
+		this.setForeground(color);
 	}
 
 	public TitleLabel(String text) {
 		super(text);
+		this.setForeground(color);
 	}
 
 	public TitleLabel(Icon image) {
 		super(image);
+		this.setForeground(color);
 	}
 
 	public TitleLabel(String text, int horizontalAlignment) {
 		super(text, horizontalAlignment);
+		this.setForeground(color);
 	}
 
 	public TitleLabel(Icon image, int horizontalAlignment) {
 		super(image, horizontalAlignment);
+		this.setForeground(color);
 	}
 
 	public TitleLabel(String text, Icon icon, int horizontalAlignment) {
 		super(text, icon, horizontalAlignment);
+		this.setForeground(color);
 	}
 
 	@Override
@@ -55,7 +66,9 @@ public class TitleLabel extends JLabel implements UIScaling {
 		default:
 			break;
 		}
-
+		for (Component child : this.getComponents()) {
+			if (child instanceof UIScaling)
+				((UIScaling) child).updateUIScaling(uiScale);
+		}
 	}
-
 }

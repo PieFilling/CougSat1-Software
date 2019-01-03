@@ -7,9 +7,9 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
-public class PhotoViewer extends JPanel {
+public class PhotoViewer extends JComponent {
 
 	private static final long serialVersionUID = 1L;
 	private BufferedImage thumbnail;
@@ -20,7 +20,7 @@ public class PhotoViewer extends JPanel {
 
 	public void setThumbnail(File newThumbnail) {
 
-//		thumbnail = (BufferedImage) newThumbnail;
+		// thumbnail = (BufferedImage) newThumbnail;
 		try {
 			thumbnail = ImageIO.read(newThumbnail);
 
@@ -43,6 +43,5 @@ public class PhotoViewer extends JPanel {
 
 			g2d.drawImage(thumbnail, 0, extraHeight, width, height, null);
 		}
-
 	}
 }

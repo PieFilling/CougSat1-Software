@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
 import space.cougs.ground.gui.utils.CustomColors;
 
-public class PlantGrid extends JPanel {
+public class PlantGrid extends JComponent {
 
 	private static final long serialVersionUID = 1L;
 
@@ -97,8 +97,7 @@ public class PlantGrid extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(CustomColors.TEXT1);
-		
-		
+
 		squareLength = Math.min(getHeight(), getWidth()) - barWidth - 10;
 		int selectedPhoto = ((gridImages.size()) * (scrollBar.x + scrollBar.width) / (this.getWidth() - 10));
 

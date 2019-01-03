@@ -1,5 +1,6 @@
 package space.cougs.ground.gui.subsystems.modules;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -21,13 +22,12 @@ public class HorizontalText extends JComponent implements UIScaling {
 	private final String label;
 	private final double divider;
 
-	private String value;
+	private String value = "";
 
-	public HorizontalText(String label, String value, double divider) {
+	public HorizontalText(String label, double divider) {
 		super();
 		this.label = label;
 		this.divider = divider;
-		this.value = value;
 		this.setForeground(CustomColors.TEXT1);
 		this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 	}
@@ -117,7 +117,9 @@ public class HorizontalText extends JComponent implements UIScaling {
 		default:
 			break;
 		}
-
+		for (Component child : this.getComponents()) {
+			if (child instanceof UIScaling)
+				((UIScaling) child).updateUIScaling(uiScale);
+		}
 	}
-
 }

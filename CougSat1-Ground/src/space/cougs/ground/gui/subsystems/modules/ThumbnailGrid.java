@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
 import space.cougs.ground.gui.utils.CustomColors;
 
-public class ThumbnailGrid extends JPanel {
+public class ThumbnailGrid extends JComponent {
 
 	private static final long serialVersionUID = 1L;
 

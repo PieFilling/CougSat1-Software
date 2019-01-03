@@ -6,17 +6,17 @@ import space.cougs.ground.satellites.CougSat;
 import space.cougs.ground.satellites.CougSat1;
 
 public class CougSatGround {
-  private static final GUI gui                   = new GUI();
-  private static final CougSat1 cougSat1         = new CougSat1();
+  private static final GUI gui = new GUI();
+  private static final CougSat1 cougSat1 = new CougSat1();
   private static final PacketHeader packetHeader = new PacketHeader();
-  private static final String versionNumber      = "1.0.3";
+  private static final String versionNumber = "1.0.3";
+  private static final String testPacket = "test/rawPackets/TestTelemetryV2";
 
   public static void main(String[] args) {
-    packetHeader.addSatellite((CougSat)cougSat1);
-    packetHeader.decodePacketSwitcher("test/rawPackets/TestTelemetry");
+    packetHeader.addSatellite((CougSat) cougSat1);
+    packetHeader.decodePacketSwitcher(testPacket);
 
     gui.update(cougSat1);
-
     // TODO
     // IFJRProgramUpload packet = new IFJRProgramUpload();
     // packet.setProgramLocation("test/CougSat1-PMIC.bin");

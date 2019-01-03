@@ -6,15 +6,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JPanel;
-
 import space.cougs.ground.gui.UIScaling;
 import space.cougs.ground.gui.subsystems.modules.ListFiles;
 import space.cougs.ground.gui.subsystems.modules.PlantGrid;
+import space.cougs.ground.gui.subsystems.modules.CISModules.CISPanel;
 import space.cougs.ground.gui.utils.CustomColors;
 import space.cougs.ground.satellites.CougSat;
 
-public class Plant extends JPanel implements UIScaling, SatelliteInfo {
+public class Plant extends CISPanel implements UIScaling, SatelliteInfo {
 
 	private static final long serialVersionUID = 1L;
 
@@ -22,10 +21,8 @@ public class Plant extends JPanel implements UIScaling, SatelliteInfo {
 	private ListFiles itr = new ListFiles();
 	private List<File> plantFolder = new ArrayList<File>();
 	private static final File plantFile = new File("packets/plant");
-	
+
 	private int border = 10;
-
-
 
 	public Plant() {
 		super();
@@ -39,7 +36,7 @@ public class Plant extends JPanel implements UIScaling, SatelliteInfo {
 		}
 
 		grid.setBackground(CustomColors.BACKGROUND2);
-		
+
 		this.add(grid);
 		this.setBackground(CustomColors.BACKGROUND1);
 	}
@@ -56,7 +53,7 @@ public class Plant extends JPanel implements UIScaling, SatelliteInfo {
 
 		@Override
 		public void componentResized(ComponentEvent e) {
-			
+
 			grid.setBounds(border, border, getWidth() - border * 2, getHeight() - border * 2);
 			repaint();
 		}

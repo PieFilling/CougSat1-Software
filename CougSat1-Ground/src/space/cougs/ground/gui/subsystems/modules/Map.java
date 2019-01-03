@@ -24,17 +24,19 @@ public class Map extends JComponent implements UIScaling {
 
 	private BufferedImage map = null;
 	private double longitude;
-	private double lattitude;
+	private double latitude;
 	private int diameter = 6;
 	private final double aspectRatio;
-	private final String longitudeText = String.format("%11.6f� E", this.longitude);
-	private final String lattitudeText = String.format("%10.6f� N", this.lattitude);
+	private String longitudeText = String.format("%11.6f\u00B0 E", 0.0);
+	private String latitudeText = String.format("%10.6f\u00B0 N", 0.0);
 
 	public Map(double lattitude, double longitude, Double aspectRatio) {
 
 		super();
-		this.lattitude = lattitude;
+		this.latitude = lattitude;
 		this.longitude = longitude;
+		longitudeText = String.format("%11.6f\u00B0 E", this.longitude);
+		latitudeText = String.format("%11.6f\u00B0 E", this.latitude);
 
 		this.setForeground(CustomColors.TEXT1);
 		this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -59,12 +61,10 @@ public class Map extends JComponent implements UIScaling {
 		FontMetrics fontMetrics = this.getFontMetrics(this.getFont());
 
 		Insets insets = this.getBorder().getBorderInsets(this);
+		
+		int width = fontMetrics.stringWidth(longitudeText) * 2 + insets.left + insets.right;
+		int height = (width - fontMetrics.getHeight()) / 2 + insets.top + insets.bottom;
 
-		int width = fontMetrics.stringWidth(longitudeText) * 2;
-		int height = ((width - fontMetrics.getHeight()) / 2);
-
-		width += insets.left + insets.right;
-		height += insets.top + insets.bottom;
 		return new Dimension(width, height);
 	}
 
@@ -72,14 +72,11 @@ public class Map extends JComponent implements UIScaling {
 	public Dimension getMinimumSize() {
 
 		FontMetrics fontMetrics = this.getFontMetrics(this.getFont());
-
 		Insets insets = this.getBorder().getBorderInsets(this);
 
-		int width = fontMetrics.stringWidth(longitudeText) * 2;
-		int height = ((width - fontMetrics.getHeight()) / 2);
+		int width = fontMetrics.stringWidth(longitudeText) * 2 + insets.left + insets.right;
+		int height = (width - fontMetrics.getHeight()) / 2 + insets.top + insets.bottom;
 
-		width += insets.left + insets.right;
-		height += insets.top + insets.bottom;
 		return new Dimension(width, height);
 
 	}
@@ -115,14 +112,14 @@ public class Map extends JComponent implements UIScaling {
 		int x = insets.left;
 		int y = y2 + fontMetrics.getAscent();
 
-		g2d.drawString(lattitudeText, x1 - insets.left, y);
+		g2d.drawString(latitudeText, x1 - insets.left, y);
 
 		x = this.getWidth() / 2;
 
 		g2d.drawString(longitudeText, x2 - fontMetrics.stringWidth(longitudeText), y);
 
 		x = (int) ((longitude + 180.0) / 360.0 * (x2 - x1) + insets.left);
-		y = (int) ((-lattitude + 90.0) / 180 * (y2 - y1) + insets.top);
+		y = (int) ((-latitude + 90.0) / 180 * (y2 - y1) + insets.top);
 
 		g2d.fillOval(x1 + x - diameter / 2, y - diameter / 2, diameter, diameter);
 	}
@@ -130,7 +127,7 @@ public class Map extends JComponent implements UIScaling {
 	public void setValue(double lattitude, double longitude) {
 
 		this.longitude = longitude;
-		this.lattitude = lattitude;
+		this.latitude = lattitude;
 	}
 
 	@Override

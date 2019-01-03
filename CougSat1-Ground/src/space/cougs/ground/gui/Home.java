@@ -14,8 +14,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -25,30 +23,32 @@ import javax.swing.text.JTextComponent;
 
 import space.cougs.ground.CougSatGround;
 import space.cougs.ground.gui.subsystems.modules.ImageModule;
-import space.cougs.ground.gui.subsystems.modules.TitleLabel;
+import space.cougs.ground.gui.subsystems.modules.CISModules.BodyLabel;
+import space.cougs.ground.gui.subsystems.modules.CISModules.CISPanel;
+import space.cougs.ground.gui.subsystems.modules.CISModules.TitleLabel;
 import space.cougs.ground.gui.utils.CustomColors;
 import space.cougs.ground.gui.utils.Fonts;
 import space.cougs.ground.gui.utils.GridBagConstraintsWrapper;
 
-public class Home extends JPanel implements UIScaling {
+public class Home extends CISPanel implements UIScaling {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final JPanel patchNotesPanel = new JPanel();
+	private static final CISPanel patchNotesPanel = new CISPanel();
 	private static final TitleLabel patchNotesHeaderText = new TitleLabel(
 			"CIS Patch Notes " + CougSatGround.getVersionnumber());
 	private static final JTextArea patchNotesBodyText = new JTextArea("");
 	private static final JScrollPane patchNotesScroll = new JScrollPane(patchNotesBodyText);
 
-	private static final JPanel aboutPanel = new JPanel();
+	private static final CISPanel aboutPanel = new CISPanel();
 	private static final TitleLabel aboutPanelHeader = new TitleLabel("About GroundStation", SwingConstants.CENTER);
 	private static final JTextArea aboutPanelBody = new JTextArea("");
 	private static final JScrollPane aboutPanelScroll = new JScrollPane(aboutPanelBody);
 
-	private static final JPanel optionsPanel = new JPanel();
-	private static final JPanel filesAndDirectories = new JPanel();
+	private static final CISPanel optionsPanel = new CISPanel();
+	private static final CISPanel filesAndDirectories = new CISPanel();
 	private static final JTextField homeDirectory = new JTextField(System.getProperty("user.dir"));
-	private static final JPanel groundStationParams = new JPanel();
+	private static final CISPanel groundStationParams = new CISPanel();
 	private static final JTextField groundstationName = new JTextField("Enter GroundStation Name");
 	private static final JTextField latittude = new JTextField();
 	private static final JTextField longitude = new JTextField();
@@ -56,7 +56,7 @@ public class Home extends JPanel implements UIScaling {
 	private static final JTextField altitude = new JTextField();
 	private static final JTextField rfRecieverDescription = new JTextField();
 
-	private static final JPanel decoderPanel = new JPanel();
+	private static final CISPanel decoderPanel = new CISPanel();
 	private static final JCheckBox uploadToServer = new JCheckBox("Upload to Server");
 	private static final JCheckBox trackDoppler = new JCheckBox("Track Doppler");
 	private static final JCheckBox storePayload = new JCheckBox("Store Payload");
@@ -64,7 +64,7 @@ public class Home extends JPanel implements UIScaling {
 	private static final JCheckBox swapIQ = new JCheckBox("Swap Iq");
 	private static final JCheckBox fixDroppedBits = new JCheckBox("Fix Dropped Bits");
 
-	private static final JPanel debugPanel = new JPanel();
+	private static final CISPanel debugPanel = new CISPanel();
 	private static final JCheckBox enableLogging = new JCheckBox("Enable Logging");
 	private static final JCheckBox debugFrames = new JCheckBox("Debug Frames");
 	private static final JCheckBox debugFields = new JCheckBox("Debug Fields");
@@ -104,29 +104,29 @@ public class Home extends JPanel implements UIScaling {
 		filesAndDirectories.setLayout(new GridBagLayout());
 		filesAndDirectories.setBackground(CustomColors.BACKGROUND1);
 		filesAndDirectories.add(new TitleLabel("Files and Directories"), gbc.setLocation(1, 0).setSize(3, 1));
-		filesAndDirectories.add(new JLabel("Home Directory"), gbc.setLocation(0, 2).setSize(1, 1));
+		filesAndDirectories.add(new BodyLabel("Home Directory"), gbc.setLocation(0, 2).setSize(1, 1));
 
 		filesAndDirectories.add(homeDirectory, gbc.setLocation(1, 3).setSize(1, 1).setWeight(1.0, 0.0));
-		filesAndDirectories.add(new JLabel("Log Files Directory:"),
+		filesAndDirectories.add(new BodyLabel("Log Files Directory:"),
 				gbc.setLocation(0, 3).setSize(1, 1).setWeight(0.0, 0.0));
-		filesAndDirectories.add(new JLabel(System.getProperty("user.dir")), gbc.setLocation(1, 2).setSize(2, 1));
+		filesAndDirectories.add(new BodyLabel(System.getProperty("user.dir")), gbc.setLocation(1, 2).setSize(2, 1));
 		optionsPanel.add(filesAndDirectories, gbc.setLocation(0, 1).setSize(2, 1));
 
 		groundStationParams.setLayout(new GridBagLayout());
 		groundStationParams.setBackground(CustomColors.BACKGROUND1);
 		groundStationParams.add(new TitleLabel("Ground Station Params", SwingConstants.CENTER),
 				gbc.setLocation(0, 0).setSize(2, 1).setWeight(1.0, 0.0));
-		groundStationParams.add(new JLabel("GroundStation Name: "), gbc.setLocation(0, 1).setSize(1, 1));
-		groundStationParams.add(new JLabel("Longitude: "), gbc.setLocation(0, 2));
-		groundStationParams.add(new JLabel("Latittude:"), gbc.setLocation(0, 3));
+		groundStationParams.add(new BodyLabel("GroundStation Name: "), gbc.setLocation(0, 1).setSize(1, 1));
+		groundStationParams.add(new BodyLabel("Longitude: "), gbc.setLocation(0, 2));
+		groundStationParams.add(new BodyLabel("Latittude:"), gbc.setLocation(0, 3));
 		groundStationParams.add(groundstationName, gbc.setLocation(1, 1));
 		groundStationParams.add(longitude, gbc.setLocation(1, 2));
 		groundStationParams.add(latittude, gbc.setLocation(1, 3));
-		groundStationParams.add(new JLabel("Lat Long gives Locator:"), gbc.setLocation(0, 4));
+		groundStationParams.add(new BodyLabel("Lat Long gives Locator:"), gbc.setLocation(0, 4));
 		groundStationParams.add(latLongLocator, gbc.setLocation(1, 4).setWeight(0.0, 0.0));
-		groundStationParams.add(new JLabel("Altitude(m):"), gbc.setLocation(0, 5));
+		groundStationParams.add(new BodyLabel("Altitude(m):"), gbc.setLocation(0, 5));
 		groundStationParams.add(altitude, gbc.setLocation(1, 5));
-		groundStationParams.add(new JLabel("Rf-Reciever Description"), gbc.setLocation(0, 6));
+		groundStationParams.add(new BodyLabel("Rf-Reciever Description"), gbc.setLocation(0, 6));
 		groundStationParams.add(rfRecieverDescription, gbc.setLocation(1, 6));
 
 		optionsPanel.add(groundStationParams, gbc.setLocation(0, 2).setSize(3, 1).setWeight(0.0, 0.0));
@@ -187,8 +187,7 @@ public class Home extends JPanel implements UIScaling {
 			e.printStackTrace();
 		}
 
-		patchNotesPanel.add(patchNotesScroll,
-				gbc.setLocation(0, 4).setSize(2, 1).setWeight(1.0, 1.0));
+		patchNotesPanel.add(patchNotesScroll, gbc.setLocation(0, 4).setSize(2, 1).setWeight(1.0, 1.0));
 		this.add(patchNotesPanel, gbc.setLocation(0, 3).setSize(1, 1).setWeight(1.0, 1.0));
 
 		this.setBackground(CustomColors.BACKGROUND2);
@@ -252,7 +251,7 @@ public class Home extends JPanel implements UIScaling {
 					subComponent.setFont(font);
 					subComponent.setBackground(CustomColors.BACKGROUND1);
 					subComponent.setForeground(Color.white);
-				} else if (subComponent instanceof JLabel) {
+				} else if (subComponent instanceof BodyLabel) {
 					subComponent.setFont(bodyfont);
 				} else if (subComponent instanceof JTextArea) {
 					subComponent.setFont(bodyfont);
@@ -265,7 +264,7 @@ public class Home extends JPanel implements UIScaling {
 						subsubComponent.setFont(font);
 						subsubComponent.setBackground(CustomColors.BACKGROUND1);
 						subsubComponent.setForeground(Color.white);
-					} else if (subsubComponent instanceof JLabel) {
+					} else if (subsubComponent instanceof BodyLabel) {
 						subsubComponent.setFont(bodyfont);
 					} else if (subsubComponent instanceof JTextField) {
 						subsubComponent.setFont(bodyfont);

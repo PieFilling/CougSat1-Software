@@ -7,10 +7,10 @@ import java.awt.event.ComponentListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 
 import space.cougs.ground.CougSatGround;
+import space.cougs.ground.gui.subsystems.modules.CISModules.CISPanel;
+import space.cougs.ground.gui.subsystems.modules.CISModules.CISTabbedPane;
 import space.cougs.ground.gui.utils.CustomColors;
 import space.cougs.ground.gui.utils.Fonts;
 import space.cougs.ground.satellites.CougSat;
@@ -22,8 +22,8 @@ public class GUI implements UIScaling {
 	private static final int defaultWidth = 1200;
 
 	private final CougSat1GUI cougSat1GUI = new CougSat1GUI();
-	private final JTabbedPane mainPanel = new JTabbedPane();
-	private final JPanel home = new Home();
+	private final CISTabbedPane mainPanel = new CISTabbedPane();
+	private final CISPanel home = new Home();
 	private final JFrame mainFrame;
 
 	public GUI() {
@@ -35,8 +35,8 @@ public class GUI implements UIScaling {
 		mainPanel.setPreferredSize(new Dimension(defaultWidth, defaultHeight));
 		mainPanel.setMinimumSize(new Dimension(defaultWidth, defaultHeight));
 
-		mainPanel.addTab("     Home      ", home);
-		mainPanel.addTab("   CougSat-1   ", cougSat1GUI);
+		mainPanel.addTab(String.format("%10s", "Home"), home);
+		mainPanel.addTab(String.format("%10s", "CougSat-1"), cougSat1GUI);
 		mainPanel.setSelectedComponent(cougSat1GUI);
 
 		mainFrame = new JFrame();
