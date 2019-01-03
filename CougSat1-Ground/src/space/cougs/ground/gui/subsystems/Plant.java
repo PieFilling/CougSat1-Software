@@ -14,66 +14,59 @@ import space.cougs.ground.gui.utils.CustomColors;
 import space.cougs.ground.satellites.CougSat;
 
 public class Plant extends CISPanel implements UIScaling, SatelliteInfo {
+  private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+  private PlantGrid    grid = new PlantGrid();
+  private ListFiles    itr = new ListFiles();
+  private List<File>   plantFolder = new ArrayList<File>();
+  private static final File plantFile = new File("packets/plant");
 
-	private PlantGrid grid = new PlantGrid();
-	private ListFiles itr = new ListFiles();
-	private List<File> plantFolder = new ArrayList<File>();
-	private static final File plantFile = new File("packets/plant");
+  private int border = 10;
 
-	private int border = 10;
+  public Plant() {
+    super();
+    this.setLayout(null);
+    this.addComponentListener(componentListener);
 
-	public Plant() {
-		super();
-		this.setLayout(null);
-		this.addComponentListener(componentListener);
+    itr.listFilesForFolder(plantFile, plantFolder);
 
-		itr.listFilesForFolder(plantFile, plantFolder);
+    for (File file : plantFolder) {
+      grid.addThumbnail(file);
+    }
 
-		for (File file : plantFolder) {
-			grid.addThumbnail(file);
-		}
+    grid.setBackground(CustomColors.BACKGROUND2);
 
-		grid.setBackground(CustomColors.BACKGROUND2);
+    this.add(grid);
+    this.setBackground(CustomColors.BACKGROUND1);
+  }
 
-		this.add(grid);
-		this.setBackground(CustomColors.BACKGROUND1);
-	}
+  private final ComponentListener componentListener = new ComponentListener() {
+    @Override
+    public void componentHidden(ComponentEvent e) {}
 
-	private final ComponentListener componentListener = new ComponentListener() {
+    @Override
+    public void componentMoved(ComponentEvent e) {}
 
-		@Override
-		public void componentHidden(ComponentEvent e) {
-		}
+    @Override
+    public void componentResized(ComponentEvent e) {
+      grid.setBounds(
+          border, border, getWidth() - border * 2, getHeight() - border * 2);
+      repaint();
+    }
 
-		@Override
-		public void componentMoved(ComponentEvent e) {
-		}
+    @Override
+    public void componentShown(ComponentEvent e) {
+      this.componentResized(e);
+    }
+  };
 
-		@Override
-		public void componentResized(ComponentEvent e) {
+  @Override
+  public void updateSatellite(CougSat satellite) {
+    // TODO Auto-generated method stub
+  }
 
-			grid.setBounds(border, border, getWidth() - border * 2, getHeight() - border * 2);
-			repaint();
-		}
-
-		@Override
-		public void componentShown(ComponentEvent e) {
-			this.componentResized(e);
-		}
-	};
-
-	@Override
-	public void updateSatellite(CougSat satellite) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void updateUIScaling(UIScale uiScale) {
-		// TODO Auto-generated method stub
-
-	}
-
+  @Override
+  public void updateUIScaling(UIScale uiScale) {
+    // TODO Auto-generated method stub
+  }
 }

@@ -1,7 +1,6 @@
 package space.cougs.ground.gui.subsystems;
 
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -22,7 +21,6 @@ import space.cougs.ground.gui.subsystems.modules.power.SolarPanel;
 import space.cougs.ground.gui.subsystems.modules.power.Wire;
 import space.cougs.ground.gui.utils.AnimationComponent;
 import space.cougs.ground.gui.utils.CustomColors;
-import space.cougs.ground.gui.utils.Fonts;
 import space.cougs.ground.gui.utils.GridBagConstraintsWrapper;
 import space.cougs.ground.satellites.CougSat;
 import space.cougs.ground.utils.Units;
@@ -86,7 +84,7 @@ public class EPS extends CISPanel implements UIScaling, SatelliteInfo {
 
 		timer.start();
 
-		this.add(mainPowerPanel, gbc.setLocation(0, 0).setSize(1, 1).setWeight(1.0, 1.0).setInsets(10, 10, 10, 10));
+		this.add(mainPowerPanel, gbc.setXY(0, 0).setSize(1, 1).setWeight(1.0, 1.0).setInsets(10, 10, 10, 10));
 		this.setBackground(CustomColors.BACKGROUND1);
 	}
 
@@ -179,40 +177,9 @@ public class EPS extends CISPanel implements UIScaling, SatelliteInfo {
 	@Override
 	public void updateUIScaling(UIScale uiScale) {
 
-		Font bodyFont;
-		switch (uiScale) {
-		default:
-		case SCALE_100:
-			bodyFont = Fonts.BODY_16;
-			mainPowerPanel.setFont(Fonts.TITLE_16);
-			break;
-		case SCALE_150:
-			bodyFont = Fonts.BODY_24;
-			mainPowerPanel.setFont(Fonts.TITLE_24);
-			break;
-		case SCALE_200:
-			bodyFont = Fonts.BODY_32;
-			mainPowerPanel.setFont(Fonts.TITLE_32);
-			break;
-		case SCALE_300:
-			bodyFont = Fonts.BODY_48;
-			mainPowerPanel.setFont(Fonts.TITLE_48);
-			break;
-		case SCALE_75:
-			bodyFont = Fonts.BODY_12;
-			mainPowerPanel.setFont(Fonts.TITLE_12);
-			break;
-		}
-
 		for (Component child : this.getComponents()) {
-			if (child instanceof CISPanel) {
-				child.setFont(bodyFont);
-			} else if (child instanceof SolarPanel) {
-				child.setFont(bodyFont);
-			}
-			if (child instanceof UIScaling) {
+			if (child instanceof UIScaling)
 				((UIScaling) child).updateUIScaling(uiScale);
-			}
 		}
 	}
 

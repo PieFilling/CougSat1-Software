@@ -42,7 +42,6 @@ public class Health extends CISPanel implements UIScaling, SatelliteInfo {
 			0.9, 0.0);
 	private final SingleVerticalBarGraph snr = new SingleVerticalBarGraph("SNR(dB)", -30, 30, 10, 0.6, false, 1.0, 0.2,
 			1.0, 0.1);
-
 	private final SingleVerticalBarGraph ihuTemp = new SingleVerticalBarGraph("IHU ", -50, 80, 10, 0.5, false, 0.7, 0.3,
 			0.9, 0.1);
 	private final SingleVerticalBarGraph adcsTemp = new SingleVerticalBarGraph("ADCS", -50, 80, 10, 0.5, false, 0.7,
@@ -117,56 +116,55 @@ public class Health extends CISPanel implements UIScaling, SatelliteInfo {
 		comms.setLayout(new GridBagLayout());
 
 		comms.add(new TitleLabel("Radio", SwingConstants.CENTER),
-				gbc.setLocation(0, 0).setSize(3, 1).setWeight(0.0, 0.0).setInsets(5, 5, 5, 5));
-		comms.add(rx, gbc.setLocation(0, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		comms.add(tx, gbc.setLocation(1, 1));
-		comms.add(snr, gbc.setLocation(2, 1));
+				gbc.setXY(0, 0).setSize(3, 1).setWeight(0.0, 0.0).setInsets(5, 5, 5, 5));
+		comms.add(rx, gbc.setXY(0, 1).setSize(1, 1).setWeight(1.0, 1.0));
+		comms.add(tx, gbc.setXY(1, 1));
+		comms.add(snr, gbc.setXY(2, 1));
 
 		temperature.setLayout(new GridBagLayout());
 
 		temperature.add(new TitleLabel("Temperature (\u00B0C)", SwingConstants.CENTER),
-				gbc.setLocation(0, 0).setSize(14, 1).setWeight(0.0, 0.0));
-		temperature.add(ihuTemp, gbc.setLocation(1, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		temperature.add(adcsTemp, gbc.setLocation(2, 1));
-		temperature.add(ifjrTemp, gbc.setLocation(3, 1));
-		temperature.add(pmicTemp, gbc.setLocation(4, 1));
-		temperature.add(commsTemp, gbc.setLocation(5, 1));
-		temperature.add(batteryATemp, gbc.setLocation(6, 1));
-		temperature.add(batteryBTemp, gbc.setLocation(7, 1));
+				gbc.setXY(0, 0).setSize(14, 1).setWeight(0.0, 0.0));
+		temperature.add(ihuTemp, gbc.setXY(1, 1).setSize(1, 1).setWeight(1.0, 1.0));
+		temperature.add(adcsTemp, gbc.setXY(2, 1));
+		temperature.add(ifjrTemp, gbc.setXY(3, 1));
+		temperature.add(pmicTemp, gbc.setXY(4, 1));
+		temperature.add(commsTemp, gbc.setXY(5, 1));
+		temperature.add(batteryATemp, gbc.setXY(6, 1));
+		temperature.add(batteryBTemp, gbc.setXY(7, 1));
 
 		for (int i = 0; i < 8; i++) {
 
 			pvTemps.add(new SingleVerticalBarGraph("PV " + i, -50, 80, 10, 0.5, false, 0.7, 0.3, 0.9, 0.1));
-			temperature.add(pvTemps.get(i), gbc.setLocation(i + 1, 2));
+			temperature.add(pvTemps.get(i), gbc.setXY(i + 1, 2));
 		}
 
 		power.setLayout(new GridBagLayout());
 
-		power.add(new TitleLabel("Power", SwingConstants.CENTER),
-				gbc.setLocation(0, 0).setSize(14, 1).setWeight(0.0, 0.0));
-		power.add(avgPVVoltageIn, gbc.setLocation(1, 1).setSize(1, 1).setWeight(1.0, 1.0));
-		power.add(sumPVCurrent, gbc.setLocation(2, 1));
-		power.add(sumPR3V3Current, gbc.setLocation(3, 1));
-		power.add(sumBatteryPR, gbc.setLocation(4, 1));
-		power.add(sumPV3V3Current, gbc.setLocation(5, 1));
-		power.add(battHeaterA, gbc.setLocation(6, 1));
-		power.add(battHeaterB, gbc.setLocation(7, 1));
-		power.add(prDeployCurrent, gbc.setLocation(8, 1));
-		power.add(battAVoltage, gbc.setLocation(1, 2).setInsets(5, 5, 0, 5));
-		power.add(battACurrent, gbc.setLocation(2, 2));
-		power.add(battBVoltage, gbc.setLocation(3, 2));
-		power.add(battBCurrent, gbc.setLocation(4, 2));
-		power.add(regulator3V3AVoltage, gbc.setLocation(5, 2));
-		power.add(regulator3V3ACurrent, gbc.setLocation(6, 2));
-		power.add(regulator3V3BVoltage, gbc.setLocation(7, 2));
-		power.add(regulator3V3BCurrent, gbc.setLocation(8, 2));
-		power.add(prDeployCurrent, gbc.setLocation(8, 1).setInsets(5, 5, 5, 5));
+		power.add(new TitleLabel("Power", SwingConstants.CENTER), gbc.setXY(0, 0).setSize(14, 1).setWeight(0.0, 0.0));
+		power.add(avgPVVoltageIn, gbc.setXY(1, 1).setSize(1, 1).setWeight(1.0, 1.0));
+		power.add(sumPVCurrent, gbc.setXY(2, 1));
+		power.add(sumPR3V3Current, gbc.setXY(3, 1));
+		power.add(sumBatteryPR, gbc.setXY(4, 1));
+		power.add(sumPV3V3Current, gbc.setXY(5, 1));
+		power.add(battHeaterA, gbc.setXY(6, 1));
+		power.add(battHeaterB, gbc.setXY(7, 1));
+		power.add(prDeployCurrent, gbc.setXY(8, 1));
+		power.add(battAVoltage, gbc.setXY(1, 2).setInsets(5, 5, 0, 5));
+		power.add(battACurrent, gbc.setXY(2, 2));
+		power.add(battBVoltage, gbc.setXY(3, 2));
+		power.add(battBCurrent, gbc.setXY(4, 2));
+		power.add(regulator3V3AVoltage, gbc.setXY(5, 2));
+		power.add(regulator3V3ACurrent, gbc.setXY(6, 2));
+		power.add(regulator3V3BVoltage, gbc.setXY(7, 2));
+		power.add(regulator3V3BCurrent, gbc.setXY(8, 2));
+		power.add(prDeployCurrent, gbc.setXY(8, 1).setInsets(5, 5, 5, 5));
 
 		power.add(new BodyLabel(" Battery A ", SwingConstants.CENTER),
-				gbc.setLocation(1, 4).setSize(2, 1).setWeight(0.0, 0.0).setInsets(0, 5, 5, 5));
-		power.add(new BodyLabel(" Battery B ", SwingConstants.CENTER), gbc.setLocation(3, 4));
-		power.add(new BodyLabel("Regulator A", SwingConstants.CENTER), gbc.setLocation(5, 4));
-		power.add(new BodyLabel("Regulator B", SwingConstants.CENTER), gbc.setLocation(7, 4));
+				gbc.setXY(1, 4).setSize(2, 1).setWeight(0.0, 0.0).setInsets(0, 5, 5, 5));
+		power.add(new BodyLabel(" Battery B ", SwingConstants.CENTER), gbc.setXY(3, 4));
+		power.add(new BodyLabel("Regulator A", SwingConstants.CENTER), gbc.setXY(5, 4));
+		power.add(new BodyLabel("Regulator B", SwingConstants.CENTER), gbc.setXY(7, 4));
 
 		avgPVVoltageIn.setToolTipText("Solar Panel Average Voltage In");
 		sumPVCurrent.setToolTipText("Sum of Solar Panel Current");
@@ -188,14 +186,14 @@ public class Health extends CISPanel implements UIScaling, SatelliteInfo {
 		adcs.setLayout(new GridBagLayout());
 
 		adcs.add(new TitleLabel("Attitude", SwingConstants.CENTER),
-				gbc.setLocation(0, 0).setSize(1, 1).setWeight(0.0, 0.0).setInsets(5, 5, 5, 5));
-		adcs.add(map, gbc.setLocation(0, 1).setWeight(1.0, 1.0));
+				gbc.setXY(0, 0).setSize(1, 1).setWeight(0.0, 0.0).setInsets(5, 5, 5, 5));
+		adcs.add(map, gbc.setXY(0, 1).setWeight(1.0, 1.0));
 
-		this.add(ihu, gbc.setLocation(0, 0).setWeight(0.0, 0.0).setInsets(0, 0, 5, 5));
-		this.add(adcs, gbc.setLocation(0, 1).setSize(2, 2).setWeight(0.0, 1.0).setInsets(5, 0, 0, 5));
-		this.add(temperature, gbc.setLocation(2, 2).setSize(1, 2).setWeight(1.0, 1.0).setInsets(5, 5, 0, 0));
-		this.add(comms, gbc.setLocation(1, 0).setSize(1, 1).setWeight(0.0, 0.0).setInsets(0, 5, 5, 5));
-		this.add(power, gbc.setLocation(2, 0).setSize(1, 2).setWeight(1.0, 1.0).setInsets(0, 5, 5, 0));
+		this.add(ihu, gbc.setXY(0, 0).setWeight(0.0, 0.0).setInsets(0, 0, 5, 5));
+		this.add(adcs, gbc.setXY(0, 1).setSize(2, 2).setWeight(0.0, 1.0).setInsets(5, 0, 0, 5));
+		this.add(temperature, gbc.setXY(2, 2).setSize(1, 2).setWeight(1.0, 1.0).setInsets(5, 5, 0, 0));
+		this.add(comms, gbc.setXY(1, 0).setSize(1, 1).setWeight(0.0, 0.0).setInsets(0, 5, 5, 5));
+		this.add(power, gbc.setXY(2, 0).setSize(1, 2).setWeight(1.0, 1.0).setInsets(0, 5, 5, 0));
 	}
 
 	@Override

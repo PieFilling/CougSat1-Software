@@ -18,103 +18,97 @@ import javax.swing.JComponent;
 import space.cougs.ground.gui.utils.CustomColors;
 
 public class PlantGrid extends JComponent {
+  private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+  private final List<Image> gridImages = new ArrayList<Image>();
+  private final List<File> gridFiles = new ArrayList<File>();
 
-	private final List<Image> gridImages = new ArrayList<Image>();
-	private final List<File> gridFiles = new ArrayList<File>();
+  private Rectangle scrollBar = new Rectangle(5, 0, 0, 0);
 
-	private Rectangle scrollBar = new Rectangle(5, 0, 0, 0);
+  private int lastScrollBarX = 0;
+  private int barWidth = 20;
+  private int squareLength = 0;
 
-	private int lastScrollBarX = 0;
-	private int barWidth = 20;
-	private int squareLength = 0;
+  public PlantGrid() {
+    this.addMouseMotionListener(mouseMotionListener);
+    this.addMouseListener(mouseListener);
+  }
 
-	public PlantGrid() {
+  private MouseListener mouseListener = new MouseListener() {
+    @Override
+    public void mouseClicked(MouseEvent arg0) {}
 
-		this.addMouseMotionListener(mouseMotionListener);
-		this.addMouseListener(mouseListener);
-	}
+    @Override
+    public void mouseEntered(MouseEvent arg0) {}
 
-	private MouseListener mouseListener = new MouseListener() {
+    @Override
+    public void mouseExited(MouseEvent arg0) {}
 
-		@Override
-		public void mouseClicked(MouseEvent arg0) {
-		}
+    @Override
+    public void mousePressed(MouseEvent e) {
+      if (scrollBar.contains(e.getPoint())) {
+        lastScrollBarX = e.getX();
+      }
+    }
 
-		@Override
-		public void mouseEntered(MouseEvent arg0) {
-		}
+    @Override
+    public void mouseReleased(MouseEvent arg0) {}
+  };
 
-		@Override
-		public void mouseExited(MouseEvent arg0) {
-		}
+  private final MouseMotionListener mouseMotionListener =
+      new MouseMotionListener() {
+        @Override
+        public void mouseDragged(MouseEvent e) {
+          if (scrollBar.contains(e.getPoint())) {
+            int x = scrollBar.x + e.getX() - lastScrollBarX;
+            x = (int)Math.max(
+                5, Math.min(x, getWidth() - scrollBar.getWidth() - 5));
+            scrollBar.x = x;
+            lastScrollBarX = e.getX();
+            repaint();
+          }
+        }
 
-		@Override
-		public void mousePressed(MouseEvent e) {
-			if (scrollBar.contains(e.getPoint())) {
-				lastScrollBarX = e.getX();
-			}
-		}
+        @Override
+        public void mouseMoved(MouseEvent e) {}
+      };
 
-		@Override
-		public void mouseReleased(MouseEvent arg0) {
-		}
+  public void addThumbnail(File thumbnail) {
+    try {
+      gridFiles.add(thumbnail);
+      Image image = ImageIO.read(thumbnail);
+      gridImages.add(image);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
 
-	};
+  public void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    Graphics2D g2d = (Graphics2D)g;
+    g2d.setColor(CustomColors.TEXT1);
 
-	private final MouseMotionListener mouseMotionListener = new MouseMotionListener() {
+    squareLength = Math.min(getHeight(), getWidth()) - barWidth - 10;
+    int selectedPhoto = ((gridImages.size()) * (scrollBar.x + scrollBar.width) /
+                         (this.getWidth() - 10));
 
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			if (scrollBar.contains(e.getPoint())) {
-				int x = scrollBar.x + e.getX() - lastScrollBarX;
-				x = (int) Math.max(5, Math.min(x, getWidth() - scrollBar.getWidth() - 5));
-				scrollBar.x = x;
-				lastScrollBarX = e.getX();
-				repaint();
-			}
-		}
+    g2d.drawImage(gridImages.get(Math.max(0, selectedPhoto - 1)), 5, 5,
+        squareLength, squareLength, null);
 
-		@Override
-		public void mouseMoved(MouseEvent e) {
-		}
+    g2d.drawString(String.valueOf(Math.max(0, selectedPhoto - 1)),
+        5 + squareLength / 2, 5 + squareLength / 2);
 
-	};
+    g2d.setColor(CustomColors.BAR_BACKGROUND);
+    g2d.fillRect(
+        5, this.getHeight() - 5 - barWidth, this.getWidth() - 10, barWidth);
 
-	public void addThumbnail(File thumbnail) {
-		try {
-			gridFiles.add(thumbnail);
-			Image image = ImageIO.read(thumbnail);
-			gridImages.add(image);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+    if (gridImages.size() > 0) {
+      scrollBar.setSize((getWidth() - 10) / gridImages.size(), barWidth);
+    }
+    scrollBar.y = getHeight() - 5 - barWidth;
 
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(CustomColors.TEXT1);
-
-		squareLength = Math.min(getHeight(), getWidth()) - barWidth - 10;
-		int selectedPhoto = ((gridImages.size()) * (scrollBar.x + scrollBar.width) / (this.getWidth() - 10));
-
-		g2d.drawImage(gridImages.get(Math.max(0, selectedPhoto - 1)), 5, 5, squareLength, squareLength, null);
-
-		g2d.drawString(String.valueOf(Math.max(0, selectedPhoto - 1)), 5 + squareLength / 2, 5 + squareLength / 2);
-
-		g2d.setColor(CustomColors.BAR_BACKGROUND);
-		g2d.fillRect(5, this.getHeight() - 5 - barWidth, this.getWidth() - 10, barWidth);
-
-		if (gridImages.size() > 0) {
-			scrollBar.setSize((getWidth() - 10) / gridImages.size(), barWidth);
-		}
-		scrollBar.y = getHeight() - 5 - barWidth;
-
-		g2d.setColor(CustomColors.BAR_DEFAULT);
-		g2d.fill(scrollBar);
-	}
-
+    g2d.setColor(CustomColors.BAR_DEFAULT);
+    g2d.fill(scrollBar);
+  }
 }

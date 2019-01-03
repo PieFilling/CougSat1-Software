@@ -94,80 +94,80 @@ public class Home extends CISPanel implements UIScaling {
 
 		logoPanel = new ImageModule(CISLogo);
 		logoPanel.setBackground(CustomColors.BACKGROUND1);
-		this.add(logoPanel, gbc.setLocation(0, 0).setSize(1, 1).setWeight(1.0, 2.0).setInsets(5, 5, 5, 5));
+		this.add(logoPanel, gbc.setXY(0, 0).setSize(1, 1).setWeight(1.0, 2.0).setInsets(5, 5, 5, 5));
 
 		// options Panel
 		optionsPanel.setLayout(new GridBagLayout());
 		optionsPanel.setBackground(CustomColors.BACKGROUND2);
-		optionsPanel.add(new TitleLabel("Options"), gbc.setLocation(0, 0).setSize(3, 1).setWeight(0.0, 0.0));
+		optionsPanel.add(new TitleLabel("Options"), gbc.setXY(0, 0).setSize(3, 1).setWeight(0.0, 0.0));
 
 		filesAndDirectories.setLayout(new GridBagLayout());
 		filesAndDirectories.setBackground(CustomColors.BACKGROUND1);
-		filesAndDirectories.add(new TitleLabel("Files and Directories"), gbc.setLocation(1, 0).setSize(3, 1));
-		filesAndDirectories.add(new BodyLabel("Home Directory"), gbc.setLocation(0, 2).setSize(1, 1));
+		filesAndDirectories.add(new TitleLabel("Files and Directories"), gbc.setXY(1, 0).setSize(3, 1));
+		filesAndDirectories.add(new BodyLabel("Home Directory"), gbc.setXY(0, 2).setSize(1, 1));
 
-		filesAndDirectories.add(homeDirectory, gbc.setLocation(1, 3).setSize(1, 1).setWeight(1.0, 0.0));
+		filesAndDirectories.add(homeDirectory, gbc.setXY(1, 3).setSize(1, 1).setWeight(1.0, 0.0));
 		filesAndDirectories.add(new BodyLabel("Log Files Directory:"),
-				gbc.setLocation(0, 3).setSize(1, 1).setWeight(0.0, 0.0));
-		filesAndDirectories.add(new BodyLabel(System.getProperty("user.dir")), gbc.setLocation(1, 2).setSize(2, 1));
-		optionsPanel.add(filesAndDirectories, gbc.setLocation(0, 1).setSize(2, 1));
+				gbc.setXY(0, 3).setSize(1, 1).setWeight(0.0, 0.0));
+		filesAndDirectories.add(new BodyLabel(System.getProperty("user.dir")), gbc.setXY(1, 2).setSize(2, 1));
+		optionsPanel.add(filesAndDirectories, gbc.setXY(0, 1).setSize(2, 1));
 
 		groundStationParams.setLayout(new GridBagLayout());
 		groundStationParams.setBackground(CustomColors.BACKGROUND1);
 		groundStationParams.add(new TitleLabel("Ground Station Params", SwingConstants.CENTER),
-				gbc.setLocation(0, 0).setSize(2, 1).setWeight(1.0, 0.0));
-		groundStationParams.add(new BodyLabel("GroundStation Name: "), gbc.setLocation(0, 1).setSize(1, 1));
-		groundStationParams.add(new BodyLabel("Longitude: "), gbc.setLocation(0, 2));
-		groundStationParams.add(new BodyLabel("Latittude:"), gbc.setLocation(0, 3));
-		groundStationParams.add(groundstationName, gbc.setLocation(1, 1));
-		groundStationParams.add(longitude, gbc.setLocation(1, 2));
-		groundStationParams.add(latittude, gbc.setLocation(1, 3));
-		groundStationParams.add(new BodyLabel("Lat Long gives Locator:"), gbc.setLocation(0, 4));
-		groundStationParams.add(latLongLocator, gbc.setLocation(1, 4).setWeight(0.0, 0.0));
-		groundStationParams.add(new BodyLabel("Altitude(m):"), gbc.setLocation(0, 5));
-		groundStationParams.add(altitude, gbc.setLocation(1, 5));
-		groundStationParams.add(new BodyLabel("Rf-Reciever Description"), gbc.setLocation(0, 6));
-		groundStationParams.add(rfRecieverDescription, gbc.setLocation(1, 6));
+				gbc.setXY(0, 0).setSize(2, 1).setWeight(1.0, 0.0));
+		groundStationParams.add(new BodyLabel("GroundStation Name: "), gbc.setXY(0, 1).setSize(1, 1));
+		groundStationParams.add(new BodyLabel("Longitude: "), gbc.setXY(0, 2));
+		groundStationParams.add(new BodyLabel("Latittude:"), gbc.setXY(0, 3));
+		groundStationParams.add(groundstationName, gbc.setXY(1, 1));
+		groundStationParams.add(longitude, gbc.setXY(1, 2));
+		groundStationParams.add(latittude, gbc.setXY(1, 3));
+		groundStationParams.add(new BodyLabel("Lat Long gives Locator:"), gbc.setXY(0, 4));
+		groundStationParams.add(latLongLocator, gbc.setXY(1, 4).setWeight(0.0, 0.0));
+		groundStationParams.add(new BodyLabel("Altitude(m):"), gbc.setXY(0, 5));
+		groundStationParams.add(altitude, gbc.setXY(1, 5));
+		groundStationParams.add(new BodyLabel("Rf-Reciever Description"), gbc.setXY(0, 6));
+		groundStationParams.add(rfRecieverDescription, gbc.setXY(1, 6));
 
-		optionsPanel.add(groundStationParams, gbc.setLocation(0, 2).setSize(3, 1).setWeight(0.0, 0.0));
+		optionsPanel.add(groundStationParams, gbc.setXY(0, 2).setSize(3, 1).setWeight(0.0, 0.0));
 
 		decoderPanel.setLayout(new GridBagLayout());
 		decoderPanel.setBackground(CustomColors.BACKGROUND1);
-		decoderPanel.add(new TitleLabel("Decoder Options"), gbc.setLocation(0, 0).setSize(1, 1));
-		decoderPanel.add(uploadToServer, gbc.setLocation(0, 1));
-		decoderPanel.add(trackDoppler, gbc.setLocation(0, 2));
-		decoderPanel.add(storePayload, gbc.setLocation(0, 3));
-		decoderPanel.add(leftSteroChannel, gbc.setLocation(0, 4));
-		decoderPanel.add(swapIQ, gbc.setLocation(0, 5));
-		decoderPanel.add(fixDroppedBits, gbc.setLocation(0, 6));
-		optionsPanel.add(decoderPanel, gbc.setLocation(0, 3).setWeight(1.0, 0.0));
+		decoderPanel.add(new TitleLabel("Decoder Options"), gbc.setXY(0, 0).setSize(1, 1));
+		decoderPanel.add(uploadToServer, gbc.setXY(0, 1));
+		decoderPanel.add(trackDoppler, gbc.setXY(0, 2));
+		decoderPanel.add(storePayload, gbc.setXY(0, 3));
+		decoderPanel.add(leftSteroChannel, gbc.setXY(0, 4));
+		decoderPanel.add(swapIQ, gbc.setXY(0, 5));
+		decoderPanel.add(fixDroppedBits, gbc.setXY(0, 6));
+		optionsPanel.add(decoderPanel, gbc.setXY(0, 3).setWeight(1.0, 0.0));
 
 		debugPanel.setLayout(new GridBagLayout());
 		debugPanel.setBackground(CustomColors.BACKGROUND1);
-		debugPanel.add(new TitleLabel("Debug Options"), gbc.setLocation(0, 0).setWeight(0.0, 0.0));
-		debugPanel.add(enableLogging, gbc.setLocation(0, 1));
-		debugPanel.add(debugFrames, gbc.setLocation(0, 2));
-		debugPanel.add(debugFields, gbc.setLocation(0, 3));
-		debugPanel.add(debugValues, gbc.setLocation(0, 4));
-		debugPanel.add(debugClock, gbc.setLocation(0, 5));
-		debugPanel.add(debugAudio, gbc.setLocation(0, 6));
-		debugPanel.add(debugSignal, gbc.setLocation(0, 7));
-		optionsPanel.add(debugPanel, gbc.setLocation(1, 3).setSize(1, 1).setWeight(1.0, 0.0));
+		debugPanel.add(new TitleLabel("Debug Options"), gbc.setXY(0, 0).setWeight(0.0, 0.0));
+		debugPanel.add(enableLogging, gbc.setXY(0, 1));
+		debugPanel.add(debugFrames, gbc.setXY(0, 2));
+		debugPanel.add(debugFields, gbc.setXY(0, 3));
+		debugPanel.add(debugValues, gbc.setXY(0, 4));
+		debugPanel.add(debugClock, gbc.setXY(0, 5));
+		debugPanel.add(debugAudio, gbc.setXY(0, 6));
+		debugPanel.add(debugSignal, gbc.setXY(0, 7));
+		optionsPanel.add(debugPanel, gbc.setXY(1, 3).setSize(1, 1).setWeight(1.0, 0.0));
 
-		this.add(optionsPanel, gbc.setLocation(2, 0).setSize(1, 5).setWeight(0.0, 1.0).setInsets(5, 5, 5, 5));
+		this.add(optionsPanel, gbc.setXY(2, 0).setSize(1, 5).setWeight(0.0, 1.0).setInsets(5, 5, 5, 5));
 
 		// Information Panel
 		aboutPanel.setLayout(new GridBagLayout());
 		aboutPanel.setBackground(CustomColors.BACKGROUND2);
-		aboutPanel.add(aboutPanelHeader, gbc.setLocation(0, 1).setSize(2, 1).setWeight(1.0, 0.0));
-		aboutPanel.add(aboutPanelScroll, gbc.setLocation(0, 2).setSize(2, 1).setWeight(1.0, 1.0));
+		aboutPanel.add(aboutPanelHeader, gbc.setXY(0, 1).setSize(2, 1).setWeight(1.0, 0.0));
+		aboutPanel.add(aboutPanelScroll, gbc.setXY(0, 2).setSize(2, 1).setWeight(1.0, 1.0));
 		aboutPanelBody.setText("body");
-		this.add(aboutPanel, gbc.setLocation(0, 1).setSize(1, 1).setWeight(1.0, 1.0));
+		this.add(aboutPanel, gbc.setXY(0, 1).setSize(1, 1).setWeight(1.0, 1.0));
 
 		// Patch Notes
 		patchNotesPanel.setLayout(new GridBagLayout());
 		patchNotesPanel.setBackground(CustomColors.BACKGROUND2);
-		patchNotesPanel.add(patchNotesHeaderText, gbc.setLocation(0, 3).setSize(2, 1).setWeight(1.0, 0.0));
+		patchNotesPanel.add(patchNotesHeaderText, gbc.setXY(0, 3).setSize(2, 1).setWeight(1.0, 0.0));
 
 		File file = new File("resources/PatchNotes");
 		BufferedReader br = null;
@@ -187,8 +187,8 @@ public class Home extends CISPanel implements UIScaling {
 			e.printStackTrace();
 		}
 
-		patchNotesPanel.add(patchNotesScroll, gbc.setLocation(0, 4).setSize(2, 1).setWeight(1.0, 1.0));
-		this.add(patchNotesPanel, gbc.setLocation(0, 3).setSize(1, 1).setWeight(1.0, 1.0));
+		patchNotesPanel.add(patchNotesScroll, gbc.setXY(0, 4).setSize(2, 1).setWeight(1.0, 1.0));
+		this.add(patchNotesPanel, gbc.setXY(0, 3).setSize(1, 1).setWeight(1.0, 1.0));
 
 		this.setBackground(CustomColors.BACKGROUND2);
 		this.repaint();

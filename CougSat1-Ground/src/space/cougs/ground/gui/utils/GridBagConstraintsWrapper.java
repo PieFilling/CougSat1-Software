@@ -13,7 +13,7 @@ public class GridBagConstraintsWrapper extends GridBagConstraints {
 		this.fill = GridBagConstraints.BOTH;
 	}
 
-	public GridBagConstraintsWrapper setLocation(int x, int y) {
+	public GridBagConstraintsWrapper setXY(int x, int y) {
 		this.gridx = x;
 		this.gridy = y;
 		return this;

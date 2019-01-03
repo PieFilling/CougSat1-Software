@@ -16,7 +16,6 @@ public class Wire extends JComponent implements AnimationComponent {
 	private double animationTime = 100;
 
 	public Wire(String name) {
-
 		varName = name;
 	}
 
@@ -27,7 +26,6 @@ public class Wire extends JComponent implements AnimationComponent {
 		for (int i = 0; i < this.getHeight(); i++) {
 			g2d.fillRect(i * 20, 0, 20, this.getHeight() / 2);
 		}
-
 	}
 
 	public String getName() {
@@ -59,6 +57,4 @@ public class Wire extends JComponent implements AnimationComponent {
 		animationTime = timerDuration;
 		repaint();
 	}
-
-	// solar panel, output, regulator, battery
 }

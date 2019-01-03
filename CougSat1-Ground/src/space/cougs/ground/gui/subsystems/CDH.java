@@ -46,9 +46,9 @@ public class CDH extends CISPanel implements UIScaling, SatelliteInfo {
 		chart.setBorderVisible(true);
 		chart.setBorderPaint(CustomColors.BACKGROUND1);
 		chart.getPlot().setBackgroundPaint(CustomColors.BACKGROUND2);
-		this.add(chartWrapper, gbc.setLocation(0, 0).setSize(1, 1).setWeight(1.0, 1.0));
+		this.add(chartWrapper, gbc.setXY(0, 0).setSize(1, 1).setWeight(1.0, 1.0));
 
-		this.add(new TitleLabel("Computer"), gbc.setLocation(0, 0).setSize(3, 1).setWeight(0.0, 0.0));
+		this.add(new TitleLabel("Computer"), gbc.setXY(0, 0).setSize(3, 1).setWeight(0.0, 0.0));
 		this.setBackground(CustomColors.BACKGROUND2);
 	}
 
